@@ -15,7 +15,7 @@ public class Sub_cat_service_impl implements Sub_cat_service {
 	private JdbcTemplate jdbcTemplate;
 	
 	public int insert(Sub_category sub_category) {
-		String query="insert into subcategory(sub_category_id,sub_Category_name,category)id) values(?,?,?)";
+		String query="insert into subcategory(sub_category_id,sub_Category_name,category_id) values(?,?,?)";
 		int r=this.jdbcTemplate.update(query,sub_category.getSub_category_id(),sub_category.getSub_category_name(),sub_category.getCategory_id());
 		return r;
 	}

@@ -36,7 +36,7 @@
   </tbody>
 </table>
 	<div class="container text-center">
-		<a href="" class="btn btn-outline-success">Add Category</a>
+		<a href="add-sub-category" class="btn btn-outline-success">Add Category</a>
 	</div>
 	</div>
 </div>

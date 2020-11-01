@@ -146,4 +146,21 @@ public class HomeController {
 		System.out.println(l);
 		return "sub_cat";
 	}
+	@RequestMapping("/add-sub-category")
+	public String add_subcategory(Model m)
+	{
+		m.addAttribute("title","Sub Category");
+		List<Category> l=category_service.getAllcategory();
+		m.addAttribute("category",l);
+		return "add_sub_cat";
+	}
+	@RequestMapping(value="/handle-add-sub",method=RequestMethod.POST)
+	public RedirectView handle_cat(@ModelAttribute Sub_category sub_category,HttpServletRequest request)
+	{
+		/* System.out.println(sub_category); */
+		sub_category_service.insert(sub_category);
+		RedirectView redirectview=new RedirectView();
+		redirectview.setUrl(request.getContextPath()+"/sub-category");
+		return redirectview;
+	}
 }
