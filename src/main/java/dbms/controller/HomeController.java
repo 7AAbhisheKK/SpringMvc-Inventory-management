@@ -19,10 +19,11 @@ import com.google.gson.Gson;
 
 import dbms.Entity.Category;
 import dbms.Entity.Product;
+import dbms.Entity.Product_order;
 import dbms.Entity.Sub_category;
-import dbms.Services.Category_service;
-import dbms.Services.Product_service;
-import dbms.Services.Sub_cat_service;
+import dbms.Services.Product.Category_service;
+import dbms.Services.Product.Product_service;
+import dbms.Services.Product.Sub_cat_service;
 
 @Controller
 public class HomeController {
@@ -44,6 +45,17 @@ public class HomeController {
 		String Sub_cat=json.toJson(l);
 		System.out.println(Sub_cat);
 		return Sub_cat;
+	}
+	@ResponseBody
+	@RequestMapping(value="/test-demo2/{sub_cat_id}",method=RequestMethod.GET)
+	public String sub_cat(@PathVariable("sub_cat_id") String sub_cat_id,HttpServletRequest request)
+	{
+		List<Product_order> l=product_service.getAllProduct_order(sub_cat_id);
+		
+		Gson json=new Gson();
+		String product=json.toJson(l);
+		System.out.println(product);
+		return product;
 	}
 	
 	
