@@ -19,11 +19,13 @@ import com.google.gson.Gson;
 
 import dbms.Entity.Cart;
 import dbms.Entity.Category;
-import dbms.Entity.Product;
-import dbms.Entity.Product_order;
+import dbms.Entity.Order;
+import dbms.Entity.Purchase_detail;
 import dbms.Services.Product.Category_service_impl;
 import dbms.Services.Product.Product_service_impl;
+import dbms.Services.Purchase.Purchase_service_impl;
 import dbms.Services.cart.Product_cart_service_impl;
+import dbms.Services.order.Order_service_impl;
 
 @Controller
 public class OrderController {
@@ -36,6 +38,13 @@ public class OrderController {
 	
 	@Autowired
 	private Product_service_impl product_service;
+	
+	@Autowired
+	private Order_service_impl order_service;
+	
+	@Autowired
+	private Purchase_service_impl purchase_service;
+	
 
 	
 	@RequestMapping("/cart")
@@ -74,6 +83,37 @@ public class OrderController {
 		RedirectView redirectview=new RedirectView();
 		redirectview.setUrl(request.getContextPath()+"/add-cart");
 		return redirectview;
+	}
+	@RequestMapping(value="/order",method=RequestMethod.GET)
+	public String order(Model m)
+	{
+		Order order=new Order();
+		m.addAttribute("order",order);
+		return "order";
+	}
+	@RequestMapping(value="/handle-order",method=RequestMethod.POST)
+	public RedirectView handle_order(@ModelAttribute Order order,HttpServletRequest request)
+	{
+		List<Cart> c=cart_service.get_all();
+		Purchase_detail purchase=new Purchase_detail();
+		int sum=0;
+		for(Cart x:c)
+		{
+			sum+=x.getPrice();
+		}
+		int order_id=order_service.insert(order,sum);
+		for(Cart x:c)
+		{
+			purchase.setProduct_id(x.getProduct_id());
+			purchase.setQuantity(x.getQuantity());
+			purchase.setOrder_id(order_id);
+			purchase_service.insert(purchase);
+		}
+		cart_service.delete_all();
+		RedirectView redirectview=new RedirectView();
+		redirectview.setUrl(request.getContextPath());
+		return redirectview;
+		
 	}
 
 }

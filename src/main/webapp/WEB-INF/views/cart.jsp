@@ -36,7 +36,9 @@
   </tbody>
 </table>
 	<div class="container text-center">
+		<a href="${pageContext.request.contextPath}/" class ="btn btn-outline-danger">Back</a>
 		<a href="add-cart" class="btn btn-outline-success">Add Another Item</a>
+		<a href="order" class ="btn btn-outline-danger">Order</a>
 	</div>
 	</div>
 </div>

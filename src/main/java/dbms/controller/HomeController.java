@@ -18,12 +18,14 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.google.gson.Gson;
 
 import dbms.Entity.Category;
+import dbms.Entity.Order;
 import dbms.Entity.Product;
 import dbms.Entity.Product_order;
 import dbms.Entity.Sub_category;
 import dbms.Services.Product.Category_service;
 import dbms.Services.Product.Product_service;
 import dbms.Services.Product.Sub_cat_service;
+import dbms.Services.order.Order_service_impl;
 
 @Controller
 public class HomeController {
@@ -33,6 +35,9 @@ public class HomeController {
 	private Category_service category_service;
 	@Autowired
 	private Sub_cat_service sub_category_service;
+	@Autowired
+	private Order_service_impl order_service;
+	
 	
 	@ResponseBody
 	@RequestMapping(value="/test-demo/{cat_id}",method=RequestMethod.GET)

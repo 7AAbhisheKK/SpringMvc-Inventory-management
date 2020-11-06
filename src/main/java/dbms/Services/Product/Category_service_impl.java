@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import dbms.Entity.Category;
-import dbms.Services.cart.RowMapperImpl_cat;
 @Component("categorydao")
 public class Category_service_impl implements Category_service {
 	

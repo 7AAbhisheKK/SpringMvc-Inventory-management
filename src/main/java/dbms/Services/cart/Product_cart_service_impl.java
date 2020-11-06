@@ -31,4 +31,11 @@ public class Product_cart_service_impl implements Product_cart_service {
 		return r;
 	}
 
+	@Override
+	public int delete_all() {
+		String query="delete from cart";
+		int r=this.jdbcTemplate.update(query);
+		return r;
+	}
+
 }
