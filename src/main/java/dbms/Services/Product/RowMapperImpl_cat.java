@@ -1,4 +1,4 @@
-package dbms.Services.cart;
+package dbms.Services.Product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
