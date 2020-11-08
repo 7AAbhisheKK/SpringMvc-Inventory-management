@@ -13,20 +13,20 @@
 		<h1 class="text-center mb-3">Fill the product detail</h1>
 		<form action="handle-order" method="post">
 			<div class="form-group">
-				<label for="customer_name">Category Name</label>
-				<input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter Customer Name">
+				<label for="customer_name">Mobile NUmber</label>
+				<input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter Customer Name" required>
 			</div>
 			<div class="form-group">
 				<label for="customer_mobile_number">Category Id</label>
-				<input type="text" class="form-control" id="customer_mobile_number" name="customer_mobile_number" placeholder="Enter Customer Mobile Number">
+				<input type="text" class="form-control" id="customer_mobile_number" name="customer_mobile_number" placeholder="Enter Customer Mobile Number" required>
 			</div>
 			<div class="form-group">
 				<label for="order_date">Order Date</label>
-				<input type="text" class="form-control" id="order_date" name="order_date" placeholder="Enter Order Date">
+				<input type="text" class="form-control" id="order_date" name="order_date" placeholder="Enter Order Date" required>
 			</div>
 			<div class="form-group">
-				<label for="month_year">Order Date</label>
-				<input type="text" class="form-control" id="month_year" name="month_year" placeholder="Enter month year">
+				<label for="month_year">Order Month-Year</label>
+				<input type="text" class="form-control" id="month_year" name="month_year" placeholder="Enter month year" required>
 			</div>
 			<div class="container text-center">
 				<a href="${pageContext.request.contextPath}/" class ="btn btn-outline-danger">Back</a>

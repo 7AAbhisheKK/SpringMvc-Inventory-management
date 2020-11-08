@@ -92,14 +92,14 @@ public class OrderController {
 		return "order";
 	}
 	@RequestMapping(value="/handle-order",method=RequestMethod.POST)
-	public RedirectView handle_order(@ModelAttribute Order order,HttpServletRequest request)
+	public String handle_order(@ModelAttribute Order order,HttpServletRequest request,Model m)
 	{
 		List<Cart> c=cart_service.get_all();
 		Purchase_detail purchase=new Purchase_detail();
 		int sum=0;
 		for(Cart x:c)
 		{
-			sum+=x.getPrice();
+			sum+=x.getPrice()*x.getQuantity();
 		}
 		int order_id=order_service.insert(order,sum);
 		for(Cart x:c)
@@ -107,12 +107,15 @@ public class OrderController {
 			purchase.setProduct_id(x.getProduct_id());
 			purchase.setQuantity(x.getQuantity());
 			purchase.setOrder_id(order_id);
+			purchase.setPrice(x.getPrice());
 			purchase_service.insert(purchase);
 		}
+		m.addAttribute("products",c);
+		m.addAttribute("total_price",sum);
+		m.addAttribute("order",order);
+		m.addAttribute("order_id",order_id);
 		cart_service.delete_all();
-		RedirectView redirectview=new RedirectView();
-		redirectview.setUrl(request.getContextPath());
-		return redirectview;
+		return "bill";
 		
 	}
 
