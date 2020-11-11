@@ -48,6 +48,18 @@
 				<label for="Product_id">Product Id</label>
 				<input type="text" class="form-control" id="product_id" name="product_id" placeholder="Enter the Product ID" value="${product.getProduct_id() }">
 			</div>
+			<div class="form-group">
+				<label for="in_price">Stock Price</label>
+				<input type="text" class="form-control" id="in_price" name="in_price" placeholder="Enter the Stock Price" value="${product.getIn_price() }">
+			</div>
+			<div class="form-group">
+				<label for="in_quantity">Stock Quantity</label>
+				<input type="text" class="form-control" id="in_quantity" name="in_quantity" placeholder="Enter the Stock Quantity" value="${product.getIn_quantity() }">
+			</div>
+			<div class="form-group">
+				<label for="in_wholesale_price">Stock wholesale price</label>
+				<input type="text" class="form-control" id="in_wholesale_price" name="in_wholesale_price" placeholder="Enter the Stock Wholesale Price" value="${product.getIn_wholesale_price() }">
+			</div>
 			<div class="container text-center">
 				<a href="${pageContext.request.contextPath}/" class ="btn btn-outline-danger">Back</a>
 				<button type="submit" class="btn btn-primary">Update</button>

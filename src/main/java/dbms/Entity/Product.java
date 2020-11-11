@@ -11,9 +11,16 @@ public class Product {
 	private String product_id;
 	private String name;
 	private String sub_category;
+	private int in_quantity;
+	private int in_price;
+	private int in_wholesale_price;
+	public Product() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public Product(int selling_price, int wholesale_price, String arrival_date, String expiry_date,
 			int available_quantity, int minimum_quantity, String brand, String product_id, String name,
-			String sub_category) {
+			String sub_category, int in_quantity, int in_price, int in_wholesale_price) {
 		super();
 		this.selling_price = selling_price;
 		this.wholesale_price = wholesale_price;
@@ -25,37 +32,18 @@ public class Product {
 		this.product_id = product_id;
 		this.name = name;
 		this.sub_category = sub_category;
-	}
-	public String getSub_category() {
-		return sub_category;
-	}
-	public void setSub_category(String sub_category) {
-		this.sub_category = sub_category;
+		this.in_quantity = in_quantity;
+		this.in_price = in_price;
+		this.in_wholesale_price = in_wholesale_price;
 	}
 	@Override
 	public String toString() {
 		return "Product [selling_price=" + selling_price + ", wholesale_price=" + wholesale_price + ", Arrival_date="
 				+ Arrival_date + ", Expiry_date=" + Expiry_date + ", Available_quantity=" + Available_quantity
 				+ ", minimum_quantity=" + minimum_quantity + ", Brand=" + Brand + ", product_id=" + product_id
-				+ ", name=" + name + ", sub_category=" + sub_category + "]";
+				+ ", name=" + name + ", sub_category=" + sub_category + ", in_quantity=" + in_quantity + ", in_price="
+				+ in_price + ", in_wholesale_price=" + in_wholesale_price + "]";
 	}
-	public Product() {
-		super();
-	}
-	public Product(int selling_price, int wholesale_price, String arrival_date, String expiry_date,
-			int available_quantity, int minimum_quantity, String brand, String product_id, String name) {
-		super();
-		this.selling_price = selling_price;
-		this.wholesale_price = wholesale_price;
-		this.Arrival_date = arrival_date;
-		this.Expiry_date = expiry_date;
-		this.Available_quantity = available_quantity;
-		this.minimum_quantity = minimum_quantity;
-		this.Brand = brand;
-		this.product_id = product_id;
-		this.name = name;
-	}
-	
 	public int getSelling_price() {
 		return selling_price;
 	}
@@ -109,5 +97,29 @@ public class Product {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getSub_category() {
+		return sub_category;
+	}
+	public void setSub_category(String sub_category) {
+		this.sub_category = sub_category;
+	}
+	public int getIn_quantity() {
+		return in_quantity;
+	}
+	public void setIn_quantity(int in_quantity) {
+		this.in_quantity = in_quantity;
+	}
+	public int getIn_price() {
+		return in_price;
+	}
+	public void setIn_price(int in_price) {
+		this.in_price = in_price;
+	}
+	public int getIn_wholesale_price() {
+		return in_wholesale_price;
+	}
+	public void setIn_wholesale_price(int in_wholesale_price) {
+		this.in_wholesale_price = in_wholesale_price;
 	}
 }

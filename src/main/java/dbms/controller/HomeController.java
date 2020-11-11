@@ -62,6 +62,17 @@ public class HomeController {
 		System.out.println(product);
 		return product;
 	}
+	@ResponseBody
+	@RequestMapping(value="/test-demo4/{product_id}",method=RequestMethod.GET)
+	public String get_product(@PathVariable("product_id") String product_id,HttpServletRequest request)
+	{
+		Product l=product_service.getProduct(product_id);
+		
+		Gson json=new Gson();
+		String product=json.toJson(l);
+		System.out.println(product);
+		return product;
+	}
 	
 	
 	
@@ -180,4 +191,29 @@ public class HomeController {
 		redirectview.setUrl(request.getContextPath()+"/sub-category");
 		return redirectview;
 	}
+	@RequestMapping("/handle-product-order")
+	public String Product_order(Model m)
+	{
+		
+		Product product=new Product();
+		m.addAttribute("product",product);
+		List<Category> l=category_service.getAllcategory();
+		m.addAttribute("cat",l);
+		int total=0;
+		m.addAttribute("total",total);
+		return "product_order";
+	}
+	@RequestMapping(value="/handle-whole-order",method=RequestMethod.POST)
+	public RedirectView whole_order(@ModelAttribute("product") Product product,HttpServletRequest request,@ModelAttribute("total") int total)
+	{
+		Product temp=product_service.getProduct(product.getProduct_id());
+		product.setAvailable_quantity(temp.getAvailable_quantity()+product.getAvailable_quantity());
+		product_service.change(product,product.getProduct_id());
+		System.out.println(product);
+		System.out.println(total);
+		RedirectView redirectview=new RedirectView();
+		redirectview.setUrl(request.getContextPath()+"/handle-product-order");
+		return redirectview;
+	}
+	
 }
