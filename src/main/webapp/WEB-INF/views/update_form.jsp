@@ -37,16 +37,12 @@
 				<input type="text" class="form-control" id="Available_quantity" name="Available_quantity" placeholder="Enter the Available Quantity" value="${product.getAvailable_quantity() }">
 			</div>
 			<div class="form-group">
-				<label for="minimum_quantity">Minimum Quantity</label>
-				<input type="text" class="form-control" id="minimum_quantity" name="minimum_quantity" placeholder="Enter the minimum Quantity" value="${product.getMinimum_quantity() }">
-			</div>
-			<div class="form-group">
 				<label for="Brand">Brand</label>
 				<input type="text" class="form-control" id="Brand" name="Brand" placeholder="Enter the Brand" value="${product.getBrand() }">
 			</div>
 			<div class="form-group">
 				<label for="Product_id">Product Id</label>
-				<input type="text" class="form-control" id="product_id" name="product_id" placeholder="Enter the Product ID" value="${product.getProduct_id() }">
+				<input type="text" class="form-control" id="product_id" name="product_id" placeholder="Enter the Product ID" value="${product.getProduct_id() }" readonly>
 			</div>
 			<div class="form-group">
 				<label for="in_price">Stock Price</label>
@@ -59,6 +55,9 @@
 			<div class="form-group">
 				<label for="in_wholesale_price">Stock wholesale price</label>
 				<input type="text" class="form-control" id="in_wholesale_price" name="in_wholesale_price" placeholder="Enter the Stock Wholesale Price" value="${product.getIn_wholesale_price() }">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" id="sub_category" name="sub_category"  value="${product.getSub_category() }" hidden>
 			</div>
 			<div class="container text-center">
 				<a href="${pageContext.request.contextPath}/" class ="btn btn-outline-danger">Back</a>

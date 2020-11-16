@@ -9,7 +9,6 @@ import dbms.Entity.Sub_category;
 
 public class RowMapperImpl_sub implements RowMapper<Sub_category> {
 
-	@Override
 	public Sub_category mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Sub_category sub_category=new Sub_category();
 		sub_category.setCategory_id(rs.getString(3));

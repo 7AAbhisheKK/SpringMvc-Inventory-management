@@ -36,7 +36,7 @@ public class Sub_cat_service_impl implements Sub_cat_service {
 	public Map<String, String> getAllsub_by_cat_in_map(String cat_id) {
 		String query="select * from subcategory where category_id=?";
 		List<Sub_category> l=this.jdbcTemplate.query(query, new Object[] {cat_id},new RowMapperImpl_sub());
-		Map<String,String> m=new HashMap<>();
+		Map<String,String> m=new HashMap<String, String>();
 		for (Sub_category s:l)
 		{
 			m.put(s.getSub_category_id(), s.getSub_category_name());

@@ -9,7 +9,6 @@ import dbms.Entity.Product_order;
 
 public class RowMapperImpl_order implements RowMapper<Product_order> {
 
-	@Override
 	public Product_order mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Product_order product_order=new Product_order();
 		product_order.setProduct_id(rs.getString(1));

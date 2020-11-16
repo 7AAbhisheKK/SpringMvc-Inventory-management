@@ -12,8 +12,7 @@
     >
     
     
-    <context:component-scan base-package="dbms.controller" />
-    <context:component-scan base-package="dbms.Services"/>
+    <context:component-scan base-package="dbms" />
     <mvc:annotation-driven></mvc:annotation-driven>
     <mvc:resources location="/WEB-INF/resources/" mapping="/resources/**"></mvc:resources>
     <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="ds">

@@ -9,7 +9,6 @@ import dbms.Entity.Cart;
 
 public class RowMapperImpl_cart implements RowMapper<Cart> {
 
-	@Override
 	public Cart mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Cart cart=new Cart();
 		cart.setProduct_id(rs.getString(1));

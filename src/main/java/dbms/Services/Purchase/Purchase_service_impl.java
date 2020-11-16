@@ -11,7 +11,6 @@ public class Purchase_service_impl implements Purchase_service{
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	@Override
 	public int insert(Purchase_detail purchase) {
 		String query="insert into purchase_detail(quantity,product_id,order_id,price) values(?,?,?,?)";
 		int r=this.jdbcTemplate.update(query,purchase.getQuantity(),purchase.getProduct_id(),purchase.getOrder_id(),purchase.getPrice());

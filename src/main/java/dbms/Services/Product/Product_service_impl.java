@@ -14,8 +14,8 @@ public class Product_service_impl implements Product_service {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	public int insert(Product product) {
-		String query="insert into product(selling_price,wholesale_price,Arrival_date,Expiry_date,Available_Quantity,minimum_quantity,Brand,product_id,name,sub_category_id,in_quantity,in_price,in_wholesale_price) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		int r = this.jdbcTemplate.update(query,product.getSelling_price(),product.getWholesale_price(),product.getArrival_date(),product.getExpiry_date(),product.getAvailable_quantity(),product.getMinimum_quantity(),product.getBrand(),product.getProduct_id(),product.getName(),product.getSub_category(),0,product.getSelling_price(),product.getWholesale_price());
+		String query="insert into product(selling_price,wholesale_price,Arrival_date,Expiry_date,Available_Quantity,Brand,product_id,name,sub_category_id,in_quantity,in_price,in_wholesale_price,in_expiry_date) values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		int r = this.jdbcTemplate.update(query,product.getSelling_price(),product.getWholesale_price(),product.getArrival_date(),product.getExpiry_date(),product.getAvailable_quantity(),product.getBrand(),product.getProduct_id(),product.getName(),product.getSub_category(),0,product.getSelling_price(),product.getWholesale_price(),null);
 		return r;
 	}
 	public JdbcTemplate getJdbcTemplate() {
@@ -27,8 +27,8 @@ public class Product_service_impl implements Product_service {
 	public int change(Product product,String product_id) {
 		
 		System.out.println(product);
-		String query="update product set name=?,selling_price=?,wholesale_price=?,Arrival_date=?,Expiry_date=?,Available_quantity=?,minimum_quantity=?,Brand=?,product_id=?,sub_category_id=?,in_quantity=?,in_price=?,in_wholesale_price=? where product_id=?";
-		int r=this.jdbcTemplate.update(query,product.getName(),product.getSelling_price(),product.getWholesale_price(),product.getArrival_date(),product.getExpiry_date(),product.getAvailable_quantity(),product.getMinimum_quantity(),product.getBrand(),product.getProduct_id(),product.getSub_category(),product.getIn_quantity(),product.getIn_price(),product.getIn_wholesale_price(),product_id);
+		String query="update product set name=?,selling_price=?,wholesale_price=?,Arrival_date=?,Expiry_date=?,Available_quantity=?,Brand=?,product_id=?,sub_category_id=?,in_quantity=?,in_price=?,in_wholesale_price=?,in_expiry_date=? where product_id=?";
+		int r=this.jdbcTemplate.update(query,product.getName(),product.getSelling_price(),product.getWholesale_price(),product.getArrival_date(),product.getExpiry_date(),product.getAvailable_quantity(),product.getBrand(),product.getProduct_id(),product.getSub_category(),product.getIn_quantity(),product.getIn_price(),product.getIn_wholesale_price(),product.getIn_expiry_date(),product_id);
 		return r;
 	}
 	public int delete(String product_id) {
@@ -54,11 +54,20 @@ public class Product_service_impl implements Product_service {
 		System.out.println(sub_cat_id);
 		return product;
 	}
-	@Override
 	public int getselling_price(String product_id) {
 		String query="select in_price from product where product_id=?";
 		int selling_price=this.jdbcTemplate.queryForObject(query,Integer.class,product_id);
 		return selling_price;
+	}
+	public List<Product> out_of_stock() {
+		String query="select * from product where in_quantity=0";
+		List<Product> product=this.jdbcTemplate.query(query,new RowMapperImpl());
+		return product;
+	}
+	public List<Product> out_stock_ware() {
+		String query="select * from product where available_quantity=0";
+		List<Product> product=this.jdbcTemplate.query(query,new RowMapperImpl());
+		return product;
 	}
 
 }

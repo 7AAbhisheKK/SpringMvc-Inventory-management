@@ -12,4 +12,6 @@ public interface Product_service {
 	public List<Product> getAllProduct();
 	public  List<Product_order> getAllProduct_order(String sub_cat_id);
 	public int getselling_price(String product_id);
+	public List<Product> out_of_stock();
+	public List<Product> out_stock_ware();
 }

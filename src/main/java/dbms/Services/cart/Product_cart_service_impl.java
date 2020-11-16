@@ -15,7 +15,6 @@ public class Product_cart_service_impl implements Product_cart_service {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
-	@Override
 	public List<Cart> get_all() {
 		
 		String query="Select product.product_id,name,cart.selling_price,quantity from product,cart where product.product_id=cart.product_id";
@@ -24,14 +23,12 @@ public class Product_cart_service_impl implements Product_cart_service {
 		
 	}
 
-	@Override
 	public int insert(Cart cart) {
 		String query="insert into cart(product_id,quantity,selling_price) values(?,?,?)";
 		int r=this.jdbcTemplate.update(query,cart.getProduct_id(),cart.getQuantity(),cart.getPrice());
 		return r;
 	}
 
-	@Override
 	public int delete_all() {
 		String query="delete from cart";
 		int r=this.jdbcTemplate.update(query);

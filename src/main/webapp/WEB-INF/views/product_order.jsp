@@ -45,7 +45,7 @@
 		    </select>
 		  </div>
 			<div class="form-group">
-			<label for="Available_quantity">Quantity to be ordered</label>
+			<label for="Available_quantity">Quantity received</label>
 			<input placeholder="Quantity" class="form-control" id="Available_quantity" type="number" value="1" min="1" max="100" name="Available_quantity" required/>
 			</div>
 			<div class="form-group" >

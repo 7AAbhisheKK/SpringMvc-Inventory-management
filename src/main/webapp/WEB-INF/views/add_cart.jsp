@@ -47,7 +47,8 @@
 			</div>
 			<div class="container text-center">
 				<a href="${pageContext.request.contextPath}/" class ="btn btn-outline-danger">Back</a>
-				<button type="submit" class="btn btn-primary">Submit</button>
+				<a href="${pageContext.request.contextPath}/cart" class ="btn btn-secondary">Go to cart</a>
+				<button type="submit" class="btn btn-primary" id="btn">Submit</button>
 			</div>
 			
 		</form>
@@ -143,12 +144,41 @@ $(document).ready(function(){
 	$('#quantity').change(function(){
 		var quantity=$(this).val();
 		var price=document.getElementById("price").value;
+		var product_id=document.getElementById("product_id").value;
 		if(price.length>0)
 			{
 			document.getElementById("total").setAttribute('value',price*quantity);
 			}
+		if(product_id.length>0&&quantity>0)
+		{
+	
+			$.ajax({
+				type:'GET',
+				url:'${pageContext.request.contextPath}/test-demo4/'+product_id,
+				success:function(result)
+				{
+					var result=JSON.parse(result);
+					if(quantity>result.in_quantity)
+					{
+						
+						$("#btn").prop('disabled', true);
+						alert("Quantity is too large to be added in cart");
+					}
+					else
+					{
+						$("#btn").prop('disabled', false);
+					}
+				}
+				
+			});
+		}
+		else
+		{
+			$("#btn").prop('disabled', true);
+		}
 		
 	});
+		
 });
 
 

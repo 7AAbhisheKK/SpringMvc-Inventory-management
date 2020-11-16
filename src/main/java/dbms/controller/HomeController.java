@@ -1,5 +1,9 @@
 package dbms.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,9 +26,11 @@ import dbms.Entity.Order;
 import dbms.Entity.Product;
 import dbms.Entity.Product_order;
 import dbms.Entity.Sub_category;
+import dbms.Entity.Wholesale_order;
 import dbms.Services.Product.Category_service;
 import dbms.Services.Product.Product_service;
 import dbms.Services.Product.Sub_cat_service;
+import dbms.Services.Whole_order.Whole_order;
 import dbms.Services.order.Order_service_impl;
 
 @Controller
@@ -37,6 +43,9 @@ public class HomeController {
 	private Sub_cat_service sub_category_service;
 	@Autowired
 	private Order_service_impl order_service;
+	
+	@Autowired
+	private Whole_order whole_service;
 	
 	
 	@ResponseBody
@@ -206,14 +215,39 @@ public class HomeController {
 	@RequestMapping(value="/handle-whole-order",method=RequestMethod.POST)
 	public RedirectView whole_order(@ModelAttribute("product") Product product,HttpServletRequest request,@ModelAttribute("total") int total)
 	{
+		
 		Product temp=product_service.getProduct(product.getProduct_id());
+		Wholesale_order w=new Wholesale_order();
+		Date d1 = new Date();
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		w.setOrder_date(sdf.format(d1));
+		w.setPrice(product.getWholesale_price());
+		w.setProduct_id(product.getProduct_id());
+		w.setQuantity(product.getAvailable_quantity());
 		product.setAvailable_quantity(temp.getAvailable_quantity()+product.getAvailable_quantity());
 		product_service.change(product,product.getProduct_id());
+		whole_service.insert(w);
 		System.out.println(product);
 		System.out.println(total);
 		RedirectView redirectview=new RedirectView();
 		redirectview.setUrl(request.getContextPath()+"/handle-product-order");
 		return redirectview;
 	}
+	@RequestMapping("/out-stock")
+	public String out_stock(Model m)
+	{
+		List<Product> l=product_service.out_of_stock();
+		m.addAttribute("product",l);
+		return "out-stock";
+	}
+	@RequestMapping("/expiring-soon")
+	public String Exping_soon(Model m)
+	{
+		int interval=0;
+		m.addAttribute("interval",interval);
+		return "expiring-soon";
+	}
+	
+	
 	
 }

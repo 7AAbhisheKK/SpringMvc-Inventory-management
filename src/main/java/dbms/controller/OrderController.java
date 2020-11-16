@@ -1,6 +1,9 @@
 package dbms.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +23,7 @@ import com.google.gson.Gson;
 import dbms.Entity.Cart;
 import dbms.Entity.Category;
 import dbms.Entity.Order;
+import dbms.Entity.Product;
 import dbms.Entity.Purchase_detail;
 import dbms.Services.Product.Category_service_impl;
 import dbms.Services.Product.Product_service_impl;
@@ -88,6 +92,10 @@ public class OrderController {
 	public String order(Model m)
 	{
 		Order order=new Order();
+		Date d1 = new Date();
+		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		System.out.println(sdf.format(d1));
+		order.setOrder_date(sdf.format(d1));
 		m.addAttribute("order",order);
 		return "order";
 	}
@@ -109,6 +117,9 @@ public class OrderController {
 			purchase.setOrder_id(order_id);
 			purchase.setPrice(x.getPrice());
 			purchase_service.insert(purchase);
+			Product temp=product_service.getProduct(x.getProduct_id());
+			temp.setIn_quantity(temp.getIn_quantity()-x.getQuantity());
+			product_service.change(temp, temp.getProduct_id());
 		}
 		m.addAttribute("products",c);
 		m.addAttribute("total_price",sum);

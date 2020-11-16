@@ -57,7 +57,7 @@ function Popup(data)
                     </div>
                     <div class="col invoice-details">
                         <h1 class="invoice-id">Order ID ${order_id}</h1>
-                        <div class="date">Date of Invoice: ${order.getOrder_date()}-${order.getMonth_year()}</div>
+                        <div class="date">Date of Invoice: ${order.getOrder_date()}</div>
                     </div>
                 </div>
                 <table >

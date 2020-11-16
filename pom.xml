@@ -7,7 +7,20 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>dbms Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  <dependencyManagement>
+	<dependencies>
+		<!-- ... other dependency elements ... -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-framework-bom</artifactId>
+			<version>5.2.3.RELEASE</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+	</dependencies>
+</dependencyManagement>
   <dependencies>
+  
   <dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -20,6 +33,24 @@
 			<artifactId>spring-context</artifactId>
 			<version>5.2.3.RELEASE</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-bom -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>5.2.3.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>5.2.3.RELEASE</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-core -->
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-core</artifactId>
+		    <version>5.2.3.RELEASE</version>
+		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
@@ -45,6 +76,20 @@
 		    <artifactId>spring-webmvc</artifactId>
 		    <version>5.2.3.RELEASE</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
+	<dependency>
+	    <groupId>javax.servlet</groupId>
+	    <artifactId>servlet-api</artifactId>
+	    <version>2.5</version>
+	    <scope>provided</scope>
+	</dependency>
+		<!-- https://mvnrepository.com/artifact/javax.servlet.jsp/jsp-api -->
+	<dependency>
+	    <groupId>javax.servlet.jsp</groupId>
+	    <artifactId>jsp-api</artifactId>
+	    <version>2.2</version>
+	    <scope>provided</scope>
+	</dependency>
 		
     <dependency>
       <groupId>junit</groupId>
@@ -58,8 +103,21 @@
 	    <artifactId>gson</artifactId>
 	    <version>2.8.6</version>
 	</dependency>
+	
   </dependencies>
   <build>
+  <plugins>
+  	<plugin>
+  		<groupId>org.apache.maven.plugins</groupId>
+  		<artifactId>maven-war-pulgin</artifactId>
+  		<version>2.4</version>
+  		<configuration>
+  			<warSourceDirectory>src/main/webapp</warSourceDirectory>
+  			<warName>dbms</warName>
+  			<failOnMissingwebXml>false</failOnMissingwebXml>
+  		</configuration>
+  	</plugin>
+  </plugins>
     <finalName>dbms</finalName>
   </build>
 </project>
