@@ -4,23 +4,6 @@ public class Post {
 	private String post_id;
 	private String post_name;
 	private int salary;
-	private String username;
-	public Post() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	public Post(String post_id, String post_name, int salary, String username) {
-		super();
-		this.post_id = post_id;
-		this.post_name = post_name;
-		this.salary = salary;
-		this.username = username;
-	}
-	@Override
-	public String toString() {
-		return "Post [post_id=" + post_id + ", post_name=" + post_name + ", salary=" + salary + ", username=" + username
-				+ "]";
-	}
 	public String getPost_id() {
 		return post_id;
 	}
@@ -39,11 +22,19 @@ public class Post {
 	public void setSalary(int salary) {
 		this.salary = salary;
 	}
-	public String getUsername() {
-		return username;
+	public Post() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public Post(String post_id, String post_name, int salary) {
+		super();
+		this.post_id = post_id;
+		this.post_name = post_name;
+		this.salary = salary;
+	}
+	@Override
+	public String toString() {
+		return "Post [post_id=" + post_id + ", post_name=" + post_name + ", salary=" + salary + "]";
 	}
 
 }

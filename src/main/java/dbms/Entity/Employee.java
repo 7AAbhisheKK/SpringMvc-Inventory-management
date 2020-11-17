@@ -10,9 +10,9 @@ public class Employee {
 	private String email;
 	private int age;
 	private String password;
-	private boolean enable;
 	private String role;
 	private String last_payment;
+	private String post_id;
 	public String getUsername() {
 		return username;
 	}
@@ -67,12 +67,6 @@ public class Employee {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public boolean isEnable() {
-		return enable;
-	}
-	public void setEnable(boolean enable) {
-		this.enable = enable;
-	}
 	public String getRole() {
 		return role;
 	}
@@ -85,15 +79,21 @@ public class Employee {
 	public void setLast_payment(String last_payment) {
 		this.last_payment = last_payment;
 	}
+	public String getPost_id() {
+		return post_id;
+	}
+	public void setPost_id(String post_id) {
+		this.post_id = post_id;
+	}
 	@Override
 	public String toString() {
 		return "Employee [username=" + username + ", name=" + name + ", dob=" + dob + ", date_joined=" + date_joined
 				+ ", date_resigned=" + date_resigned + ", Address=" + Address + ", email=" + email + ", age=" + age
-				+ ", password=" + password + ", enable=" + enable + ", role=" + role + ", last_payment=" + last_payment
-				+ "]";
+				+ ", password=" + password + ", role=" + role + ", last_payment=" + last_payment
+				+ ", post_id=" + post_id + "]";
 	}
 	public Employee(String username, String name, String dob, String date_joined, String date_resigned, String address,
-			String email, int age, String password, boolean enable, String role, String last_payment) {
+			String email, int age, String password, String role, String last_payment, String post_id) {
 		super();
 		this.username = username;
 		this.name = name;
@@ -104,14 +104,15 @@ public class Employee {
 		this.email = email;
 		this.age = age;
 		this.password = password;
-		this.enable = enable;
 		this.role = role;
 		this.last_payment = last_payment;
+		this.post_id = post_id;
 	}
 	public Employee() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	
 	
 }

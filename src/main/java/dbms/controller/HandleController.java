@@ -31,6 +31,7 @@ import dbms.Services.User.user_service_impl;
 import dbms.Services.maintenance.maintenance_service_impl;
 
 @Controller
+@RequestMapping("/admin")
 public class HandleController {
 	
 	@Autowired
@@ -44,43 +45,11 @@ public class HandleController {
 	private user_service_impl user_service;
 	@Autowired
 	private Emp_pay_service_impl employee_payment_service;
-	
 	@Autowired
 	private Mis_service_impl mis_service;
 	
-	@RequestMapping(value="/handle-refill/{product_id}",method=RequestMethod.POST)
-	public RedirectView handle_refill(@PathVariable("product_id") String product_id,HttpServletRequest request,@ModelAttribute("quantity") int quantity)
-	{
-		Product p=product_service.getProduct(product_id);
-		if(quantity<=p.getAvailable_quantity()&&p.getAvailable_quantity()!=0)
-		{
-			p.setIn_quantity(quantity);
-			p.setAvailable_quantity(p.getAvailable_quantity()-quantity);
-			p.setIn_wholesale_price(p.getWholesale_price());
-			p.setIn_price(p.getSelling_price());
-			p.setIn_expiry_date(p.getExpiry_date());
-			product_service.change(p, product_id);
-			RedirectView redirectview=new RedirectView();
-			redirectview.setUrl(request.getContextPath()+"/out-stock");
-			return redirectview;
-		}
-		RedirectView redirectview=new RedirectView();
-		redirectview.setUrl(request.getContextPath()+"/erro");
-		return redirectview;
-	}
-	@RequestMapping(value="/refill/{product_id}",method=RequestMethod.GET)
-	public String refill(@PathVariable("product_id") String product_id,HttpServletRequest request,Model m)
-	{
-		m.addAttribute("product_id",product_id);
-		return "refill";
-	}
-	@RequestMapping(value="/out-stock-ware",method=RequestMethod.GET)
-	public String out_stock_ware(Model m)
-	{
-		List<Product> l=product_service.out_stock_ware();
-		m.addAttribute("product",l);
-		return "out-stock-ware";
-	}
+	
+	
 	@RequestMapping(value="/add-maintenance",method=RequestMethod.GET)
 	public String maintenance(Model m)
 	{
@@ -103,8 +72,7 @@ public class HandleController {
 		List<Employee_extended> l=new ArrayList<Employee_extended>();
 		for(Employee x:e)
 		{
-			System.out.println(x);
-			Post p=post_service.get(x.getUsername());
+			Post p=post_service.getPost(x.getPost_id());
 			Employee_extended temp=new Employee_extended(x,p);
 			l.add(temp);
 			
@@ -116,7 +84,7 @@ public class HandleController {
 	public String pay(Model m,@PathVariable("username") String username)
 	{
 		Employee e=user_service.getUser(username);
-		Post p=post_service.get(username);
+		Post p=post_service.getPost(e.getPost_id());
 		Employee_extended employee=new Employee_extended(e,p);
 		String description = null;
 		m.addAttribute("description",description);
@@ -135,29 +103,7 @@ public class HandleController {
 		redirectview.setUrl(request.getContextPath());
 		return redirectview;
 	}
-	@RequestMapping(value="/expired",method=RequestMethod.GET)
-	public String expired(Model m)
-	{
-		
-		List<Product> p=mis_service.Expired_product();
-		m.addAttribute("product",p);
-		return "expired";
-	}
-	@RequestMapping(value="/expired2",method=RequestMethod.GET)
-	public String expired2(Model m)
-	{
-		
-		List<Product> p=mis_service.Expired_ware();
-		m.addAttribute("product",p);
-		return "expired";
-	}
-	@RequestMapping(value="/handle-expiring-soon",method=RequestMethod.POST)
-	public String handle_Exping_soon(@ModelAttribute("interval") int interval,Model m)
-	{
-		List<Product> product=mis_service.Expiring_one(interval);
-		m.addAttribute("product",product);
-		return "expired";
-	}
+	
 	@RequestMapping(value="/sale",method=RequestMethod.GET)
 	public String handle_Exping_soon(Model m)
 	{

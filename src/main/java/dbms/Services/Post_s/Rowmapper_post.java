@@ -14,7 +14,6 @@ public class Rowmapper_post implements RowMapper<Post> {
 		post.setPost_id(rs.getString(1));
 		post.setPost_name(rs.getString(2));
 		post.setSalary(rs.getInt(3));
-		post.setUsername(rs.getString(4));
 		return post;
 	}
 

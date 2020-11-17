@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Period;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,12 +22,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.RedirectView;
 
 import dbms.Entity.Employee;
+import dbms.Entity.Post;
+import dbms.Services.Post_s.Post_service_impl;
 import dbms.Services.User.user_service_impl;
 
 @Controller
 public class AuthContoller {
 	@Autowired
 	private user_service_impl user_service;
+	@Autowired
+	private Post_service_impl post_service;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -36,6 +41,8 @@ public class AuthContoller {
 	{
 		Employee e=new Employee();
 		m.addAttribute("employee",e);
+		List<Post> p=post_service.getAll();
+		m.addAttribute("Post",p);
 		return "registration";
 	}
 	@SuppressWarnings("deprecation")
@@ -50,6 +57,7 @@ public class AuthContoller {
 		int age=(int) (TimeUnit.MILLISECONDS.toDays(age1)/365l);
 		employee.setAge(age);
 		employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+		System.out.println(employee);
 		this.user_service.insert(employee);
 		RedirectView redirectview=new RedirectView();
 		redirectview.setUrl(request.getContextPath());

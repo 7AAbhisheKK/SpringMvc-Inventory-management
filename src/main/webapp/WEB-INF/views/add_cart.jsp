@@ -47,7 +47,7 @@
 			</div>
 			<div class="container text-center">
 				<a href="${pageContext.request.contextPath}/" class ="btn btn-outline-danger">Back</a>
-				<a href="${pageContext.request.contextPath}/cart" class ="btn btn-secondary">Go to cart</a>
+				<a href="cart" class ="btn btn-secondary">Go to cart</a>
 				<button type="submit" class="btn btn-primary" id="btn">Submit</button>
 			</div>
 			

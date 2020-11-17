@@ -5,7 +5,7 @@ import java.util.List;
 import dbms.Entity.Post;
 
 public interface Post_service {
-	public Post get(String username);
 	public List<Post> getAll();
+	public Post getPost(String post_id);
 
 }

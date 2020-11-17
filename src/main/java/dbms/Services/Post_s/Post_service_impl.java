@@ -15,15 +15,15 @@ public class Post_service_impl implements Post_service {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	public Post get(String username) {
-		String query="select * from post where username=?";
+	public Post getPost(String post_id) {
+		String query="select * from post where post_id=?";
 		RowMapper<Post> rowMapper=new Rowmapper_post();
-		Post post=this.jdbcTemplate.queryForObject(query,rowMapper,username);
+		Post post=this.jdbcTemplate.queryForObject(query,rowMapper,post_id);
 		return post;
 	}
 
 	public List<Post> getAll() {
-		String query="select * from post where username=?";
+		String query="select * from post";
 		List<Post> post=this.jdbcTemplate.query(query,new Rowmapper_post());
 		return post;
 	}

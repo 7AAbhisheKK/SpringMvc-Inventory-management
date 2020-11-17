@@ -27,6 +27,7 @@ import dbms.Entity.Product;
 import dbms.Entity.Product_order;
 import dbms.Entity.Sub_category;
 import dbms.Entity.Wholesale_order;
+import dbms.Services.Miscellaneous.Mis_service_impl;
 import dbms.Services.Product.Category_service;
 import dbms.Services.Product.Product_service;
 import dbms.Services.Product.Sub_cat_service;
@@ -34,6 +35,7 @@ import dbms.Services.Whole_order.Whole_order;
 import dbms.Services.order.Order_service_impl;
 
 @Controller
+@RequestMapping("/staff")
 public class HomeController {
 	@Autowired
 	private Product_service product_service;
@@ -47,41 +49,8 @@ public class HomeController {
 	@Autowired
 	private Whole_order whole_service;
 	
-	
-	@ResponseBody
-	@RequestMapping(value="/test-demo/{cat_id}",method=RequestMethod.GET)
-	public String sub(@PathVariable("cat_id") String cat_id,HttpServletRequest request)
-	{
-		List<Sub_category> l=sub_category_service.getAllsub_by_cat(cat_id);
-//		Map<String,String> l= sub_category_service.getAllsub_by_cat_in_map(cat_id);
-		
-		Gson json=new Gson();
-		String Sub_cat=json.toJson(l);
-		System.out.println(Sub_cat);
-		return Sub_cat;
-	}
-	@ResponseBody
-	@RequestMapping(value="/test-demo2/{sub_cat_id}",method=RequestMethod.GET)
-	public String sub_cat(@PathVariable("sub_cat_id") String sub_cat_id,HttpServletRequest request)
-	{
-		List<Product_order> l=product_service.getAllProduct_order(sub_cat_id);
-		
-		Gson json=new Gson();
-		String product=json.toJson(l);
-		System.out.println(product);
-		return product;
-	}
-	@ResponseBody
-	@RequestMapping(value="/test-demo4/{product_id}",method=RequestMethod.GET)
-	public String get_product(@PathVariable("product_id") String product_id,HttpServletRequest request)
-	{
-		Product l=product_service.getProduct(product_id);
-		
-		Gson json=new Gson();
-		String product=json.toJson(l);
-		System.out.println(product);
-		return product;
-	}
+	@Autowired
+	private Mis_service_impl mis_service;
 	
 	
 	
@@ -92,14 +61,7 @@ public class HomeController {
 		m.addAttribute("cat",l);
 		return "test";
 	}
-	@RequestMapping("/")
-	public String home(Model m)
-	{
-		List<Product> l=product_service.getAllProduct();
-		m.addAttribute("product",l);
-		System.out.println(l);
-		return "index";
-	}
+	
 	@RequestMapping("/add-product")
 	public String addProduct(Model m)
 	{
@@ -138,7 +100,7 @@ public class HomeController {
 		model.addAttribute("v",v);
 		model.addAttribute(product);
 		model.addAttribute("product_id",product_id);
-		System.out.println(v);
+		
 		return "update_form";
 	}
 	@RequestMapping("/update/{product_id}")
@@ -157,7 +119,6 @@ public class HomeController {
 	{
 		List<Category> l=category_service.getAllcategory();
 		m.addAttribute("category",l);
-		System.out.println(l);
 		return "category";
 	}
 	@RequestMapping("/add-category")
@@ -172,7 +133,7 @@ public class HomeController {
 	{
 		category_service.insert(category);
 		RedirectView redirectview=new RedirectView();
-		redirectview.setUrl(request.getContextPath()+"/category");
+		redirectview.setUrl(request.getContextPath()+"/staff/category");
 		return redirectview;
 	}
 	@RequestMapping("/sub-category")
@@ -180,7 +141,6 @@ public class HomeController {
 	{
 		List<Sub_category> l=sub_category_service.getAllsub();
 		m.addAttribute("sub_category",l);
-		System.out.println(l);
 		return "sub_cat";
 	}
 	@RequestMapping("/add-sub-category")
@@ -188,7 +148,6 @@ public class HomeController {
 	{
 		m.addAttribute("title","Sub Category");
 		List<Category> l=category_service.getAllcategory();
-		m.addAttribute("category",l);
 		return "add_sub_cat";
 	}
 	@RequestMapping(value="/handle-add-sub",method=RequestMethod.POST)
@@ -197,7 +156,7 @@ public class HomeController {
 		/* System.out.println(sub_category); */
 		sub_category_service.insert(sub_category);
 		RedirectView redirectview=new RedirectView();
-		redirectview.setUrl(request.getContextPath()+"/sub-category");
+		redirectview.setUrl(request.getContextPath()+"/staff/sub-category");
 		return redirectview;
 	}
 	@RequestMapping("/handle-product-order")
@@ -227,10 +186,8 @@ public class HomeController {
 		product.setAvailable_quantity(temp.getAvailable_quantity()+product.getAvailable_quantity());
 		product_service.change(product,product.getProduct_id());
 		whole_service.insert(w);
-		System.out.println(product);
-		System.out.println(total);
 		RedirectView redirectview=new RedirectView();
-		redirectview.setUrl(request.getContextPath()+"/handle-product-order");
+		redirectview.setUrl(request.getContextPath()+"/staff/handle-product-order");
 		return redirectview;
 	}
 	@RequestMapping("/out-stock")
@@ -247,7 +204,62 @@ public class HomeController {
 		m.addAttribute("interval",interval);
 		return "expiring-soon";
 	}
-	
+	@RequestMapping(value="/expired",method=RequestMethod.GET)
+	public String expired(Model m)
+	{
+		
+		List<Product> p=mis_service.Expired_product();
+		m.addAttribute("product",p);
+		return "expired";
+	}
+	@RequestMapping(value="/expired2",method=RequestMethod.GET)
+	public String expired2(Model m)
+	{
+		
+		List<Product> p=mis_service.Expired_ware();
+		m.addAttribute("product",p);
+		return "expired";
+	}
+	@RequestMapping(value="/handle-expiring-soon",method=RequestMethod.POST)
+	public String handle_Exping_soon(@ModelAttribute("interval") int interval,Model m)
+	{
+		List<Product> product=mis_service.Expiring_one(interval);
+		m.addAttribute("product",product);
+		return "expired";
+	}
+	@RequestMapping(value="/handle-refill/{product_id}",method=RequestMethod.POST)
+	public RedirectView handle_refill(@PathVariable("product_id") String product_id,HttpServletRequest request,@ModelAttribute("quantity") int quantity)
+	{
+		Product p=product_service.getProduct(product_id);
+		if(quantity<=p.getAvailable_quantity()&&p.getAvailable_quantity()!=0)
+		{
+			p.setIn_quantity(quantity);
+			p.setAvailable_quantity(p.getAvailable_quantity()-quantity);
+			p.setIn_wholesale_price(p.getWholesale_price());
+			p.setIn_price(p.getSelling_price());
+			p.setIn_expiry_date(p.getExpiry_date());
+			product_service.change(p, product_id);
+			RedirectView redirectview=new RedirectView();
+			redirectview.setUrl(request.getContextPath()+"/staff/out-stock");
+			return redirectview;
+		}
+		RedirectView redirectview=new RedirectView();
+		redirectview.setUrl(request.getContextPath()+"/erro");
+		return redirectview;
+	}
+	@RequestMapping(value="/refill/{product_id}",method=RequestMethod.GET)
+	public String refill(@PathVariable("product_id") String product_id,HttpServletRequest request,Model m)
+	{
+		m.addAttribute("product_id",product_id);
+		return "refill";
+	}
+	@RequestMapping(value="/out-stock-ware",method=RequestMethod.GET)
+	public String out_stock_ware(Model m)
+	{
+		List<Product> l=product_service.out_stock_ware();
+		m.addAttribute("product",l);
+		return "out-stock-ware";
+	}
 	
 	
 }

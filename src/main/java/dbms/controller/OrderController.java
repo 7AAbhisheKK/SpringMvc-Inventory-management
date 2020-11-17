@@ -32,6 +32,7 @@ import dbms.Services.cart.Product_cart_service_impl;
 import dbms.Services.order.Order_service_impl;
 
 @Controller
+@RequestMapping("/cashier")
 public class OrderController {
 	
 	@Autowired
@@ -69,23 +70,13 @@ public class OrderController {
 		return "add_cart";
 	}
 	
-	@RequestMapping(value="/test-demo3/{product_id}",method=RequestMethod.GET)
-	@ResponseBody
-	public String getSellingPrice(@PathVariable("product_id") String product_id,HttpServletRequest request)
-	{
-		int selling_price=product_service.getselling_price(product_id);
-		Gson json=new Gson();
-		String price=json.toJson(selling_price);
-		System.out.println(price);
-		return price;
-	}
+	
 	@RequestMapping(value="/handle-cart-add",method=RequestMethod.POST)
 	public RedirectView handle_add_cart(@ModelAttribute Cart cart,HttpServletRequest request)
 	{
-		System.out.println(cart);
 		cart_service.insert(cart);
 		RedirectView redirectview=new RedirectView();
-		redirectview.setUrl(request.getContextPath()+"/add-cart");
+		redirectview.setUrl(request.getContextPath()+"/cashier/add-cart");
 		return redirectview;
 	}
 	@RequestMapping(value="/order",method=RequestMethod.GET)
