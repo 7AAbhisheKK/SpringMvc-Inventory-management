@@ -24,8 +24,8 @@ public class Product_cart_service_impl implements Product_cart_service {
 	}
 
 	public int insert(Cart cart) {
-		String query="insert into cart(product_id,quantity,selling_price) values(?,?,?)";
-		int r=this.jdbcTemplate.update(query,cart.getProduct_id(),cart.getQuantity(),cart.getPrice());
+		String query="insert into cart(product_id,quantity) values(?,?)";
+		int r=this.jdbcTemplate.update(query,cart.getProduct_id(),cart.getQuantity());
 		return r;
 	}
 

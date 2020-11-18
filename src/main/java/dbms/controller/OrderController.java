@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.google.gson.Gson;
 
 import dbms.Entity.Cart;
+import dbms.Entity.Cart_extended;
 import dbms.Entity.Category;
 import dbms.Entity.Order;
 import dbms.Entity.Product;
@@ -35,8 +37,6 @@ import dbms.Services.order.Order_service_impl;
 @RequestMapping("/cashier")
 public class OrderController {
 	
-	@Autowired
-	private Product_cart_service_impl cart_service;
 	
 	@Autowired 
 	private Category_service_impl category_service;
@@ -53,10 +53,26 @@ public class OrderController {
 
 	
 	@RequestMapping("/cart")
-	public String test1(Model m)
+	public String test1(Model m,HttpSession session)
 	{
-		List<Cart> c=cart_service.get_all();
-		m.addAttribute("cart",c);
+		List<Cart> c=(List<Cart>) session.getAttribute("cart1");
+		List<Cart_extended> cx=null;
+		if(c!=null)
+		{
+			cx=new ArrayList<Cart_extended>();
+			for(Cart x:c)
+			{
+				Product p=product_service.getProduct(x.getProduct_id());
+				Cart_extended temp=new Cart_extended();
+				temp.setName(p.getName());
+				temp.setQuantity(x.getQuantity());
+				temp.setProduct_id(x.getProduct_id());
+				temp.setPrice(p.getIn_price());
+				cx.add(temp);
+			}
+		}
+		System.out.println(cx);
+		m.addAttribute("cart",cx);
 		return "cart";
 	}
 	@RequestMapping("/add-cart")
@@ -64,7 +80,6 @@ public class OrderController {
 	{
 		List<Category> l=category_service.getAllcategory();
 		Cart c=new Cart();
-		m.addAttribute("cart",c);
 		m.addAttribute("cat",l);
 		m.addAttribute("title", "Add Product");
 		return "add_cart";
@@ -74,7 +89,21 @@ public class OrderController {
 	@RequestMapping(value="/handle-cart-add",method=RequestMethod.POST)
 	public RedirectView handle_add_cart(@ModelAttribute Cart cart,HttpServletRequest request)
 	{
-		cart_service.insert(cart);
+		HttpSession session=request.getSession();
+		List<Cart> c=(List<Cart>) session.getAttribute("cart1");
+		if(c==null)
+		{
+			c=new ArrayList<Cart>();
+			c.add(cart);
+			session.setAttribute("cart1", c);
+		}
+		else
+		{
+			c=(List<Cart>) session.getAttribute("cart1");
+			c.add(cart);
+			session.setAttribute("cart1", c);
+		}
+		System.out.println(c);
 		RedirectView redirectview=new RedirectView();
 		redirectview.setUrl(request.getContextPath()+"/cashier/add-cart");
 		return redirectview;
@@ -91,17 +120,32 @@ public class OrderController {
 		return "order";
 	}
 	@RequestMapping(value="/handle-order",method=RequestMethod.POST)
-	public String handle_order(@ModelAttribute Order order,HttpServletRequest request,Model m)
+	public String handle_order(@ModelAttribute Order order,HttpServletRequest request,Model m,HttpSession session)
 	{
-		List<Cart> c=cart_service.get_all();
+		List<Cart> c=(List<Cart>) session.getAttribute("cart1");
 		Purchase_detail purchase=new Purchase_detail();
+		List<Cart_extended> cx = null;
+		if(c!=null)
+		{
+			cx=new ArrayList<Cart_extended>();
+			for(Cart x:c)
+			{
+				Product p=product_service.getProduct(x.getProduct_id());
+				Cart_extended temp=new Cart_extended();
+				temp.setName(p.getName());
+				temp.setQuantity(x.getQuantity());
+				temp.setProduct_id(x.getProduct_id());
+				temp.setPrice(p.getIn_price());
+				cx.add(temp);
+			}
+		}
 		int sum=0;
-		for(Cart x:c)
+		for(Cart_extended x:cx)
 		{
 			sum+=x.getPrice()*x.getQuantity();
 		}
 		int order_id=order_service.insert(order,sum);
-		for(Cart x:c)
+		for(Cart_extended x:cx)
 		{
 			purchase.setProduct_id(x.getProduct_id());
 			purchase.setQuantity(x.getQuantity());
@@ -112,12 +156,13 @@ public class OrderController {
 			temp.setIn_quantity(temp.getIn_quantity()-x.getQuantity());
 			product_service.change(temp, temp.getProduct_id());
 		}
-		m.addAttribute("products",c);
+		m.addAttribute("products",cx);
 		m.addAttribute("total_price",sum);
 		m.addAttribute("order",order);
 		m.addAttribute("order_id",order_id);
-		cart_service.delete_all();
+		session.removeAttribute("cart1");
 		return "bill";
+		
 		
 	}
 

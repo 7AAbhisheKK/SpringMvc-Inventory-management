@@ -124,12 +124,12 @@ $(document).ready(function(){
 			{
 			$.ajax({
 				type:'GET',
-				url:'${pageContext.request.contextPath}/test-demo3/'+product_id,
+				url:'${pageContext.request.contextPath}/test-demo4/'+product_id,
 				success:function(result)
 				{
 					var result=JSON.parse(result);
 					/* console.log(result); */
-					document.getElementById("price").setAttribute('value',result);
+					document.getElementById("price").setAttribute('value',result.in_price);
 					document.getElementById("total").setAttribute('value',document.getElementById("quantity").value*document.getElementById("price").value);
 				}
 				

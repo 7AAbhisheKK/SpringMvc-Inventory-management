@@ -18,12 +18,7 @@ public class UserDetailsService_impl implements UserDetailsService {
 	@SuppressWarnings("unused")
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		System.out.println(username);
-		System.out.println("hello");
 		Employee employee=user_service.getUser(username);
-		System.out.println("hello");
-		System.out.println(employee);
-		System.out.println("hello");
 		if(employee==null)
 		{
 			throw new UsernameNotFoundException("Could not found user");
