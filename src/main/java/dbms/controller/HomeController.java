@@ -61,7 +61,13 @@ public class HomeController {
 		m.addAttribute("cat",l);
 		return "test";
 	}
-	
+	@RequestMapping({"/",""})
+	public String home(Model m)
+	{
+		List<Product> l=product_service.getAllProduct();
+		m.addAttribute("product",l);
+		return "header_staff";
+	}
 	@RequestMapping("/add-product")
 	public String addProduct(Model m)
 	{
@@ -73,7 +79,6 @@ public class HomeController {
 	@RequestMapping(value="/handle-add",method=RequestMethod.POST)
 	public RedirectView handle_add(@ModelAttribute Product product,HttpServletRequest request)
 	{
-		System.out.println(product);
 		product_service.insert(product);
 		RedirectView redirectview=new RedirectView();
 		redirectview.setUrl(request.getContextPath()+"/");

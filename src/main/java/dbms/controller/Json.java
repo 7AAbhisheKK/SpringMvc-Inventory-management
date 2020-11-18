@@ -58,13 +58,7 @@ public class Json {
 		String product=json.toJson(l);
 		return product;
 	}
-	@RequestMapping("/")
-	public String home(Model m)
-	{
-		List<Product> l=product_service.getAllProduct();
-		m.addAttribute("product",l);
-		return "index";
-	}
+	
 	@RequestMapping(value="/test-demo3/{product_id}",method=RequestMethod.GET)
 	@ResponseBody
 	public String getSellingPrice(@PathVariable("product_id") String product_id,HttpServletRequest request)

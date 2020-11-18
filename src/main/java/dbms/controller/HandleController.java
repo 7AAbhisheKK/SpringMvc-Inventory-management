@@ -1,5 +1,6 @@
 package dbms.controller;
 
+import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -79,6 +81,15 @@ public class HandleController {
 		}
 		m.addAttribute("employee",l);
 		return "employee";
+	}
+	@RequestMapping({"/",""})
+	public String home(Model m,Principal principal)
+	{
+		String name=principal.getName();
+		List<Product> l=product_service.getAllProduct();
+		m.addAttribute("product",l);
+		m.addAttribute("name", name);
+		return "index";
 	}
 	@RequestMapping(value="/pay/{username}",method=RequestMethod.GET)
 	public String pay(Model m,@PathVariable("username") String username)

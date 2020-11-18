@@ -20,6 +20,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService_impl user_service;
 	
+	@Autowired
+	private CustomLoginSuccessHandler successHandler;
+	
 	@Bean
     public DaoAuthenticationProvider authenticationProvider()
     {
@@ -42,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
    
       http.authorizeRequests()
         .antMatchers("/admin/**").hasRole("ADMIN").antMatchers("/staff/**").hasAnyRole("ADMIN","STAFF").antMatchers("/cashier/**").hasAnyRole("ADMIN","CASHIER")
-        .and().formLogin().and().csrf().disable();
+        .and().formLogin().successHandler(successHandler).and().csrf().disable();
       
     }
     
