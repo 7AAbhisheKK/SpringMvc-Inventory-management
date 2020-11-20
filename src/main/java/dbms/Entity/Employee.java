@@ -8,7 +8,6 @@ public class Employee {
 	private String date_resigned;
 	private String Address;
 	private String email;
-	private int age;
 	private String password;
 	private String role;
 	private String last_payment;
@@ -55,12 +54,6 @@ public class Employee {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getAge() {
-		return age;
-	}
-	public void setAge(int age) {
-		this.age = age;
-	}
 	public String getPassword() {
 		return password;
 	}
@@ -88,12 +81,11 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee [username=" + username + ", name=" + name + ", dob=" + dob + ", date_joined=" + date_joined
-				+ ", date_resigned=" + date_resigned + ", Address=" + Address + ", email=" + email + ", age=" + age
-				+ ", password=" + password + ", role=" + role + ", last_payment=" + last_payment
-				+ ", post_id=" + post_id + "]";
+				+ ", date_resigned=" + date_resigned + ", Address=" + Address + ", email=" + email + ", password="
+				+ password + ", role=" + role + ", last_payment=" + last_payment + ", post_id=" + post_id + "]";
 	}
 	public Employee(String username, String name, String dob, String date_joined, String date_resigned, String address,
-			String email, int age, String password, String role, String last_payment, String post_id) {
+			String email, String password, String role, String last_payment, String post_id) {
 		super();
 		this.username = username;
 		this.name = name;
@@ -102,7 +94,6 @@ public class Employee {
 		this.date_resigned = date_resigned;
 		Address = address;
 		this.email = email;
-		this.age = age;
 		this.password = password;
 		this.role = role;
 		this.last_payment = last_payment;
@@ -112,6 +103,7 @@ public class Employee {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	
 	
 	

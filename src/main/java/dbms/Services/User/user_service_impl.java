@@ -28,8 +28,8 @@ public class user_service_impl implements user_service {
 	}
 
 	public int insert(Employee employee) {
-		String query="insert into employee(name,dob,date_joined,date_resigned,address,email,age,password,username,role,last_payment,post_id) values(?,?,?,?,?,?,?,?,?,?,?,?)";
-		int r=jdbcTemplate.update(query,employee.getName(),employee.getDob(),employee.getDate_joined(),employee.getDate_resigned(),employee.getAddress(),employee.getEmail(),employee.getAge(),employee.getPassword(),employee.getUsername(),employee.getRole(),employee.getLast_payment(),employee.getPost_id());
+		String query="insert into employee(name,dob,date_joined,date_resigned,address,email,password,username,role,last_payment,post_id) values(?,?,?,?,?,?,?,?,?,?,?)";
+		int r=jdbcTemplate.update(query,employee.getName(),employee.getDob(),employee.getDate_joined(),employee.getDate_resigned(),employee.getAddress(),employee.getEmail(),employee.getPassword(),employee.getUsername(),employee.getRole(),employee.getLast_payment(),employee.getPost_id());
 		return r;
 	}
 
@@ -42,6 +42,18 @@ public class user_service_impl implements user_service {
 	public int update_date(String username,String date) {
 		String query="update employee set last_payment=? where username=?";
 		int r=jdbcTemplate.update(query,date,username);
+		return r;
+	}
+
+	public int updatepass(String username, String password) {
+		String query="update employee set password=? where username=?";
+		int r=jdbcTemplate.update(query,password,username);
+		return r;
+	}
+
+	public int update(Employee employee) {
+		String query="update employee set name=?,dob=?,date_joined=?,date_resigned=?,address=?,email=?,password=?,role=?,last_payment=?,post_id=? where username=?";
+		int r=jdbcTemplate.update(query,employee.getName(),employee.getDob(),employee.getDate_joined(),employee.getDate_resigned(),employee.getAddress(),employee.getEmail(),employee.getPassword(),employee.getRole(),employee.getLast_payment(),employee.getPost_id(),employee.getUsername());
 		return r;
 	}
 

@@ -25,8 +25,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.RedirectView;
 
 import dbms.Entity.Employee;
+import dbms.Entity.Employee_extended;
 import dbms.Entity.Post;
+import dbms.Entity.Product;
+import dbms.Services.Miscellaneous.Mis_service_impl;
 import dbms.Services.Post_s.Post_service_impl;
+import dbms.Services.Product.Product_service;
 import dbms.Services.User.user_service_impl;
 
 @Controller
@@ -38,7 +42,17 @@ public class AuthContoller {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private Product_service product_service;
 	
+	@Autowired
+	private Mis_service_impl mis_service;
+	@RequestMapping(value="/error",method=RequestMethod.GET)
+	public String error()
+	{
+		
+		return "error";
+	}
 	@RequestMapping(value="/register",method=RequestMethod.GET)
 	public String reg_page(Model m)
 	{
@@ -46,25 +60,27 @@ public class AuthContoller {
 		m.addAttribute("employee",e);
 		List<Post> p=post_service.getAll();
 		m.addAttribute("Post",p);
+		String mob1=null,mob2=null;
+		m.addAttribute("mob1",mob1);
+		m.addAttribute("mob2",mob2);
 		return "registration";
 	}
-	@SuppressWarnings("deprecation")
 	@RequestMapping(value="handle-registration",method=RequestMethod.POST)
-	public RedirectView registration(@ModelAttribute("employee") Employee employee,HttpServletRequest request,Authentication authentication) throws ParseException
+	public RedirectView registration(@ModelAttribute("employee") Employee employee,HttpServletRequest request,Authentication authentication,@ModelAttribute("mob1") String mobile1,@ModelAttribute("mob2") String mobile2) throws ParseException
 	{
 		
-		Date d1 = new Date();
-		DateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
-		Date dob=formate.parse(employee.getDob());
-		long age1=d1.getTime()-dob.getTime();
-		System.out.println(employee);
-		int age=(int) (TimeUnit.MILLISECONDS.toDays(age1)/365l);
-		employee.setAge(age);
+//		Date d1 = new Date();
+//		DateFormat formate = new SimpleDateFormat("yyyy-MM-dd");
+//		Date dob=formate.parse(employee.getDob());
+//		long age1=d1.getTime()-dob.getTime();
+//		System.out.println(employee);
+//		int age=(int) (TimeUnit.MILLISECONDS.toDays(age1)/365l);
 		employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-		System.out.println(employee);
 		this.user_service.insert(employee);
+		this.mis_service.insert_number(mobile1, mobile2, employee.getUsername());
 		String url="/error";
 		RedirectView redirectview=new RedirectView();
+		redirectview.setExposeModelAttributes(false);
 		if(authentication==null)
 		{
 			redirectview.setUrl(request.getContextPath()+"/login");
@@ -101,10 +117,10 @@ public class AuthContoller {
 	{
 		if(authentication==null)
 		{
-			System.out.println("hello1");
 			return "error";
 		}
-		System.out.println(username);
+		List<String> num=mis_service.mobile_num(username);
+		System.out.println(num);
 		Collection<? extends GrantedAuthority> authorities=authentication.getAuthorities();
 		List<String> roles=new ArrayList<String>();
 		for(GrantedAuthority a:authorities)
@@ -113,14 +129,205 @@ public class AuthContoller {
 		}
 		String user=authentication.getName();
 		Employee u=user_service.getUser(user);
-		System.out.println(u);
+		Post p=post_service.getPost(u.getPost_id());
+		Employee_extended e=new Employee_extended(u,p);
+		System.out.println(e);
 		if(u.getUsername()!=username && !roles.contains("ROLE_ADMIN"))
 		{
 			System.out.println("hello2");
 			return "error";
 		}
-		m.addAttribute(m);
+		m.addAttribute("mob1",num.get(0));
+		if(num.size()>1)
+		{
+			m.addAttribute("mob2",num.get(1));
+		}
+		else
+		{
+			m.addAttribute("mob2",null);
+		}
+		m.addAttribute("employee",e);
 		return "user";
+		
+	}
+	
+	@RequestMapping(value="/user/handle-user-change-pass/{username}",method=RequestMethod.GET)
+	public String useredit(@PathVariable("username") String username,Authentication authentication,Model m)
+	{
+		if(authentication==null)
+		{
+			System.out.println("hello1");
+			return "error";
+		}
+		Collection<? extends GrantedAuthority> authorities=authentication.getAuthorities();
+		List<String> roles=new ArrayList<String>();
+		for(GrantedAuthority a:authorities)
+		{
+			roles.add(a.getAuthority());
+		}
+		String user=authentication.getName();
+		Employee u=user_service.getUser(user);
+		Post p=post_service.getPost(u.getPost_id());
+		Employee_extended e=new Employee_extended(u,p);
+		if(u.getUsername()!=username && !roles.contains("ROLE_ADMIN"))
+		{
+			return "error";
+		}
+		String password1=null;
+		String password2=null;
+		m.addAttribute("password1",password1);
+		m.addAttribute("password2", password2);
+		return "pass-change";
+		
+	}
+	@RequestMapping(value="/user/handle-user-change-password/{username}",method=RequestMethod.POST)
+	public RedirectView userpass(@PathVariable("username") String username,@ModelAttribute("password1") String password1,Authentication authentication,@ModelAttribute("password2") String password2,HttpServletRequest request)
+	{
+		RedirectView redirectview=new RedirectView();
+		redirectview.setExposeModelAttributes(false);
+		if(authentication==null)
+		{
+			redirectview.setUrl(request.getContextPath()+"/login");
+			return redirectview;
+		}
+		Collection<? extends GrantedAuthority> authorities=authentication.getAuthorities();
+		List<String> roles=new ArrayList<String>();
+		for(GrantedAuthority a:authorities)
+		{
+			roles.add(a.getAuthority());
+		}
+		String user=authentication.getName();
+		Employee u=user_service.getUser(user);
+		Post p=post_service.getPost(u.getPost_id());
+		Employee_extended e=new Employee_extended(u,p);
+		if(u.getUsername()!=username && !roles.contains("ROLE_ADMIN"))
+		{
+			redirectview.setUrl(request.getContextPath()+"/error");
+			return redirectview;
+		}
+		if(passwordEncoder.matches(password1, u.getPassword()))
+		{
+			user_service.updatepass(username, passwordEncoder.encode(password2));
+		}
+		else
+		{
+			redirectview.setUrl(request.getContextPath()+"/error");
+			return redirectview;
+		}
+		
+		redirectview.setUrl(request.getContextPath());
+		return redirectview;
+		
+	}
+	
+	@RequestMapping(value="/user/user-edit/{username}",method=RequestMethod.GET)
+	public String useredit(@PathVariable("username") String username,Authentication authentication,HttpServletRequest request,Model m)
+	{
+		
+		if(authentication==null)
+		{
+			return "error";
+		}
+		Collection<? extends GrantedAuthority> authorities=authentication.getAuthorities();
+		List<String> roles=new ArrayList<String>();
+		for(GrantedAuthority a:authorities)
+		{
+			roles.add(a.getAuthority());
+		}
+		if(!roles.contains("ROLE_ADMIN"))
+		{
+			return "error";
+		}
+		Employee u=user_service.getUser(username);
+		Post p=post_service.getPost(u.getPost_id());
+		List<Post> post=post_service.getAll();
+		
+		List<String> num=mis_service.mobile_num(username);
+		m.addAttribute("employee", u);
+		m.addAttribute("post", post);
+		m.addAttribute("defaultpost", p);
+		m.addAttribute("mob1", num.get(0));
+		if(num.size()>1)
+		{
+			m.addAttribute("mob2", num.get(1));
+		}
+		else
+		{
+			m.addAttribute("mob2", null);
+		}
+
+		return "user-edit";
+		
+	}
+	@RequestMapping(value="/user/handle-user-edit/{username}",method=RequestMethod.POST)
+	public RedirectView handleuseredit(@PathVariable("username") String username,Authentication authentication,HttpServletRequest request,@ModelAttribute("employee") Employee e,@ModelAttribute("mob1") String mob1,@ModelAttribute("mob2") String mob2)
+	{
+		RedirectView redirectview=new RedirectView();
+		redirectview.setExposeModelAttributes(false);
+		if(authentication==null)
+		{
+			redirectview.setUrl(request.getContextPath()+"/login");
+			return redirectview;
+		}
+		Collection<? extends GrantedAuthority> authorities=authentication.getAuthorities();
+		List<String> roles=new ArrayList<String>();
+		for(GrantedAuthority a:authorities)
+		{
+			roles.add(a.getAuthority());
+		}
+		Employee u=user_service.getUser(username);
+		if(!roles.contains("ROLE_ADMIN"))
+		{
+			redirectview.setUrl(request.getContextPath()+"/login");
+			return redirectview;
+		}
+		System.out.println(e);
+		u.setName(e.getName());
+		u.setAddress(e.getAddress());
+		u.setDob(e.getDob());
+		u.setPost_id(e.getPost_id());
+		u.setEmail(e.getEmail());
+		user_service.update(u);
+		mis_service.update_number(mob1, mob2, username);
+		
+		redirectview.setUrl(request.getContextPath()+"/user/"+username);
+		return redirectview;
+		
+	}
+	@RequestMapping("/")
+	public RedirectView Home(Model m,Authentication authentication,HttpServletRequest request)
+	{
+		RedirectView redirectview=new RedirectView();
+		redirectview.setExposeModelAttributes(false);
+		if(authentication==null)
+		{
+			redirectview.setUrl(request.getContextPath()+"/login");
+			return redirectview;
+		}
+		Collection<? extends GrantedAuthority> authorities=authentication.getAuthorities();
+		List<String> roles=new ArrayList<String>();
+		for(GrantedAuthority a:authorities)
+		{
+			roles.add(a.getAuthority());
+		}
+		if(roles.contains("ROLE_ADMIN"))
+		{
+			redirectview.setUrl(request.getContextPath()+"/admin");
+			return redirectview;
+		}
+		else if(roles.contains("ROLE_STAF"))
+		{
+			redirectview.setUrl(request.getContextPath()+"/staff");
+			return redirectview;
+		}
+		else if(roles.contains("ROLE_CASHIER"))
+		{
+			redirectview.setUrl(request.getContextPath()+"/cashier/cart");
+			return redirectview;
+		}
+		redirectview.setUrl(request.getContextPath()+"/error");
+		return redirectview;
+		
 		
 	}
 }

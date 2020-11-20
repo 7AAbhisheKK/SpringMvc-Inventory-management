@@ -6,12 +6,12 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
 
 <%@include file="./base.jsp" %>
-<div class="container" style="margin-top:100px;">
+<div class="container" style="margin-top:70px;">
 <div class="card bg-light">
 <article class="card-body mx-auto" style="max-width: 400px;">
 	<h4 class="card-title mt-3 text-center">Create Account</h4>
 	<p class="text-center">Create a Employee Account</p>
-	<form action="handle-registration" method="post">
+	<form action="handle-registration" method="post" onsubmit="return validation()">
 	<div class="form-group input-group">
 		<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
@@ -39,6 +39,18 @@
     </div> <!-- form-group// -->
     <div class="form-group input-group">
     	<div class="input-group-prepend">
+		    <span class="input-group-text"> <i class="fa fa-mobile" aria-hidden="true"></i> </span>
+		 </div>
+        <input name="mob1" id="mob1" class="form-control" placeholder="Enter Mobile Number" type="text" required>
+    </div> <!-- form-group// -->
+    <div class="form-group input-group">
+    	<div class="input-group-prepend">
+		    <span class="input-group-text"> <i class="fa fa-mobile" aria-hidden="true"></i> </span>
+		 </div>
+        <input name="mob2" id="mob2" class="form-control" placeholder="Enter Alternative Mobile Number" type="text">
+    </div> <!-- form-group// -->
+    <div class="form-group input-group">
+    	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-address-book" aria-hidden="true"></i> </span>
 		 </div>
         <input name="address" id="address" class="form-control" placeholder="Enter the Address" type="text-area"  required>
@@ -53,7 +65,7 @@
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
 		</div>
-        <input class="form-control" placeholder="Repeat password" type="password" required>
+        <input class="form-control" placeholder="Repeat password" type="password" id="rp" name="rp" required>
     </div> <!-- form-group// -->
     <div class="form-group input-group">
       <div class="input-group-prepend">
@@ -87,9 +99,55 @@
         <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
     </div> <!-- form-group// -->
      
-    <p class="text-center">Have an account? <a href="login">Log In</a> </p>                                                                 
+    <p class="text-center">Have an account? <a href="login">Log In</a> </p>                                                                
 </form>
 </article>
 </div> <!-- card.// -->
 
 </div> 
+<script>
+function validation()
+{
+	var username=document.getElementById("username").value;
+	var x=document.getElementById("mob1").value;
+	if(x.length!=10)
+	{
+		alert("Enter a Valid mobile number");
+		return false;
+	}
+	var y=document.getElementById("mob2").value;
+	if(y.length!=0)
+	{
+		if(y.length!=10)
+		{
+			console.log(y.length);
+			alert("Enter a Valid Alternative mobile number");
+			return false;
+		}
+		
+	}
+	x=document.getElementById("password").value;
+	y=document.getElementById("rp").value;
+	if(x!=y)
+	{
+		alert("Password did not match");
+		return false;
+	}
+	$.ajax({
+		type:'GET',
+		url:'${pageContext.request.contextPath}/test-demo5/'+username,
+		success:function(result)
+		{
+			var result=JSON.parse(result);
+			if(result==true)
+			{
+				
+				alert("Username is Already Taken");
+				return false;
+			}
+		}
+		
+	});
+	return true;
+}
+</script>

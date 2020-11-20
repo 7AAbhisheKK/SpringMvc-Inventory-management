@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import dbms.Entity.Product;
 import dbms.Entity.Product_order;
 import dbms.Entity.Sub_category;
+import dbms.Services.Miscellaneous.Mis_service;
 import dbms.Services.Product.Product_service;
 import dbms.Services.Product.Sub_cat_service;
 @Controller
@@ -26,6 +27,8 @@ public class Json {
 	private Product_service product_service;
 	@Autowired
 	private Sub_cat_service sub_category_service;
+	@Autowired
+	private Mis_service mis_service;
 	
 	@ResponseBody
 	@RequestMapping(value="/test-demo/{cat_id}",method=RequestMethod.GET)
@@ -56,6 +59,15 @@ public class Json {
 		
 		Gson json=new Gson();
 		String product=json.toJson(l);
+		return product;
+	}
+	@ResponseBody
+	@RequestMapping(value="/test-demo5/{username}",method=RequestMethod.GET)
+	public String username_validation(@PathVariable("username") String username,HttpServletRequest request)
+	{
+		boolean b=mis_service.validation(username);
+		Gson json=new Gson();
+		String product=json.toJson(b);
 		return product;
 	}
 	

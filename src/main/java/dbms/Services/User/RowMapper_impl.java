@@ -16,12 +16,11 @@ public class RowMapper_impl implements RowMapper<Employee> {
 		employee.setDate_resigned(rs.getString(4));
 		employee.setAddress(rs.getString(5));
 		employee.setEmail(rs.getString(6));
-		employee.setAge(rs.getInt(7));
-		employee.setPassword(rs.getString(8));
-		employee.setUsername(rs.getString(9));
-		employee.setRole(rs.getString(10));
-		employee.setLast_payment(rs.getString(11));
-		employee.setPost_id(rs.getString(12));
+		employee.setPassword(rs.getString(7));
+		employee.setUsername(rs.getString(8));
+		employee.setRole(rs.getString(9));
+		employee.setLast_payment(rs.getString(10));
+		employee.setPost_id(rs.getString(11));
 		return employee;
 		
 	}

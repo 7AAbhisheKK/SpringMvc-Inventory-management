@@ -59,4 +59,55 @@ public class Mis_service_impl implements Mis_service {
 		return amount;
 	}
 
+	public List<String> mobile_num(String username) {
+		String query="select number from mobile_num where username=?";
+		List<String> number=this.jdbcTemplate.query(query, new Row_mapper_string(),username);
+		return number;
+	}
+
+	public int insert_number(String num1, String num2,String username) {
+		String query="insert into mobile_num(number,username) values(?,?)";
+		int r=this.jdbcTemplate.update(query,num1,username);
+		if(num2.length()!=0)
+		{
+			r=this.jdbcTemplate.update(query,num2,username);
+		}
+		return r;
+	}
+
+	public boolean validation(String username) {
+		String query="select count(*) from employee where username=?";
+		int r=this.jdbcTemplate.queryForObject(query, new RowMapper_int(),username);
+		if(r==1)
+			return true;
+		return false;
+	}
+
+	public int update_number(String num1, String num2, String username) {
+		String query1="select number from mobile_num where username =?";
+		List<String> s=this.jdbcTemplate.query(query1, new Row_mapper_string(),username);
+		String query2;
+		if(s.get(0)!=num1)
+		{
+			query2="update mobile_num set number=? where username=? and number=?";
+			this.jdbcTemplate.update(query2,num1,username,s.get(0));
+		}
+		if(s.size()>1)
+		{
+			if(s.get(1)!=num2)
+			{
+				query2="update mobile_num set number=? where username=? and number=?";
+				this.jdbcTemplate.update(query2,num2,username,s.get(1));
+			}
+		}
+		else
+		{
+			if(num2!=null)
+			{
+				insert_number(num2,"",username);
+			}
+		}
+		return 0;
+	}
+
 }

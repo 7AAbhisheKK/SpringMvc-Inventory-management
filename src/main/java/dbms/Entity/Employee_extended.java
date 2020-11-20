@@ -8,7 +8,6 @@ public class Employee_extended {
 	private String date_resigned;
 	private String Address;
 	private String email;
-	private int age;
 	private String role;
 	private String last_payment;
 	private String post_name;
@@ -22,7 +21,6 @@ public class Employee_extended {
 		this.date_resigned=e.getDate_resigned();
 		this.Address=e.getAddress();
 		this.email=e.getEmail();
-		this.age=e.getAge();
 		this.role=e.getRole();
 		this.last_payment=e.getLast_payment();
 		this.post_name=p.getPost_name();
@@ -70,12 +68,6 @@ public class Employee_extended {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getAge() {
-		return age;
-	}
-	public void setAge(int age) {
-		this.age = age;
-	}
 	public String getRole() {
 		return role;
 	}
@@ -104,7 +96,7 @@ public class Employee_extended {
 	public String toString() {
 		return "Employee_extended [name=" + name + ", username=" + username + ", dob=" + dob + ", date_joined="
 				+ date_joined + ", date_resigned=" + date_resigned + ", Address=" + Address + ", email=" + email
-				+ ", age=" + age + ", role=" + role + ", last_payment=" + last_payment + ", post_name=" + post_name
+				+  ", role=" + role + ", last_payment=" + last_payment + ", post_name=" + post_name
 				+ ", salary=" + salary + "]";
 	}
 	public Employee_extended() {
@@ -112,7 +104,7 @@ public class Employee_extended {
 		// TODO Auto-generated constructor stub
 	}
 	public Employee_extended(String name, String username, String dob, String date_joined, String date_resigned,
-			String address, String email, int age, String role, String last_payment, String post_name, int salary) {
+			String address, String email, String role, String last_payment, String post_name, int salary) {
 		super();
 		this.name = name;
 		this.username = username;
@@ -121,7 +113,6 @@ public class Employee_extended {
 		this.date_resigned = date_resigned;
 		Address = address;
 		this.email = email;
-		this.age = age;
 		this.role = role;
 		this.last_payment = last_payment;
 		this.post_name = post_name;

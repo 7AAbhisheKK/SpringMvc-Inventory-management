@@ -16,24 +16,29 @@
 <div class="container mt-5">
 <div class="row ">
   <div class="col-md-6 offset-md-3">
-    <form class="form-horizontal">
+    <form class="form-horizontal" action="${pageContext.request.contextPath}/user/handle-user-edit/${employee.getUsername()}" method="post">
       <div class="panel panel-default">
         <div class="panel-heading">
         <h4 class="panel-title">User info</h4>
         </div>
         <div class="panel-body">
          
-          <div class="form-group">
+          <div class="form-group" >
             <label class="col-sm-2 control-label">Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" value="${employee.getName() }" readonly>
+              <input type="text" class="form-control" value="${employee.getName() }" id="name" name="name" required>
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2 control-label">Post Name</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" value="${employee.getPost_name() }" readonly>
-            </div>
+            <div class="col-md-6 col-md-11-5">
+            <select  class="form-control" id="post_id" name="post_id" required>
+		    <option selected value="${defaultpost.getPost_id()}" >${defaultpost.getPost_name()}</option>
+		      <c:forEach items="${post }" var="p">
+		      <option value="${p.getPost_id() }">${p.getPost_name() }</option>
+		      </c:forEach>
+		    </select>
+		    </div>
           </div>
         </div>
       </div>
@@ -46,37 +51,44 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">Mobile number 1</label>
             <div class="col-sm-10">
-              <input type="tel" class="form-control" value="${mob1 }" readonly>
+              <input type="tel" class="form-control" value="${mob1 }" id="mob1" name="mob1" required>
             </div>
-          </div>
+            </div>
           <div class="form-group">
             <label class="col-sm-2 control-label">Mobile number 2</label>
             <div class="col-sm-10">
-              <input type="tel" class="form-control" value="${mob2 }" readonly>
+              <input type="tel" class="form-control" value="${mob2 }" id="mob2" name="mob2" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Date of birth</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" value="${employee.getDob() }" id="dob" name="dob" required><!-- <i class="fas fa-birthday-cake"></i> -->
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2 control-label">E-mail address</label>
             <div class="col-sm-10">
-              <input type="email" class="form-control" value="${employee.getEmail() }" readonly>
+              <input type="email" class="form-control" value="${employee.getEmail() }" id="email" name="email" required>
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2 control-label">Address</label>
             <div class="col-sm-10">
-              <textarea rows="3" class="form-control" readonly>${employee.getAddress() }</textarea>
+              <textarea rows="3" class="form-control" id="address" name="address" required>${employee.getAddress() } </textarea>
             </div>
           </div>
           <div class="form-group">
             <div class="col-sm-10 col-sm-offset-2">
              <a href="${pageContext.request.contextPath}/" class="btn"><i class="fas fa-undo"></i>Back</a>
-             <a href="user-edit/${employee.getUsername() }" class="btn"><i class="fas fa-eraser text-danger">Edit</i></a>
-             <a href="handle-user-change-pass/${employee.getUsername() }" class="btn"><i class="fa fa-key" aria-hidden="true"></i>Change password</a>
             </div>
+            
           </div>
-        </div>
       </div>
-
+      </div>
+      <div class="form-group">
+        		<button type="submit" class="btn btn-primary btn-block"> Submit  </button>
+    		</div> <!-- form-group// -->
     </form>
   </div>
 </div>
