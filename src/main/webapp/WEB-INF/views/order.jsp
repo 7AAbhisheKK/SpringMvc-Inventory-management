@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@include file="./Dheader.jsp" %>
 <meta charset="ISO-8859-1">
 <%@include file="./base.jsp" %>
 </head>
@@ -10,8 +11,8 @@
 <div class="container mt-3">
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
-		<h1 class="text-center mb-3">Fill the product detail</h1>
-		<form action="handle-order" method="post">
+		<h1 class="text-center mb-3">Order</h1>
+		<form action="handle-order" method="post" onsubmit="return validation()">
 			<div class="form-group">
 				<label for="customer_name">Customer name</label>
 				<input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter Customer Name" required>
@@ -35,4 +36,17 @@
 	</div>
 </div>
 </body>
+<script>
+function validation()
+{
+	var x=document.getElementById("customer_mobile_number").value;
+	if(x.length!=10)
+	{
+		alert("Enter a Valid mobile number");
+		return false;
+	}
+
+	return true;
+}
+</script>
 </html>

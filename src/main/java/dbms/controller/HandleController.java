@@ -22,6 +22,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import dbms.Entity.Employee;
 import dbms.Entity.Employee_extended;
+import dbms.Entity.Employee_payment_extended;
+import dbms.Entity.Order_extended;
 import dbms.Entity.Post;
 import dbms.Entity.Product;
 import dbms.Entity.maintenance;
@@ -50,7 +52,13 @@ public class HandleController {
 	@Autowired
 	private Mis_service_impl mis_service;
 	
-	
+	@RequestMapping(value="/pay-detail/{username}",method=RequestMethod.GET)
+	public String pay_detail(@PathVariable("username") String username,Model m)
+	{
+		List<Employee_payment_extended> e=mis_service.getEmployee_payment(username);
+		m.addAttribute("employee_payment",e);
+		return "pay-detail";
+	}
 	
 	@RequestMapping(value="/add-maintenance",method=RequestMethod.GET)
 	public String maintenance(Model m)
@@ -88,7 +96,6 @@ public class HandleController {
 		String name=principal.getName();
 		List<Product> l=product_service.getAllProduct();
 		m.addAttribute("product",l);
-		m.addAttribute("name", name);
 		return "index";
 	}
 	@RequestMapping(value="/pay/{username}",method=RequestMethod.GET)
@@ -127,6 +134,41 @@ public class HandleController {
 		m.addAttribute("profit", profit);
 		m.addAttribute("expenditure", expenditure);
 		return "sale";
+	}
+	@RequestMapping(value="/detail-sale",method=RequestMethod.GET)
+	public String Sale_detail(Model m)
+	{
+		Date d1 = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat( "MMM yyyy", Locale.getDefault() );
+		SimpleDateFormat dateFormat1 = new SimpleDateFormat( "MM");
+		SimpleDateFormat dateFormat2=new SimpleDateFormat( "yyyy");
+		String month=dateFormat1.format(d1);
+		String year=dateFormat2.format(d1);
+		String month1=dateFormat.format(d1);
+		int sum1=mis_service.get_maintenance(month, year);
+		int sum2=mis_service.get_salary(month, year);
+		int sum3=mis_service.get_order(month, year);
+		int sum4=mis_service.get_whole_order(month, year);
+		m.addAttribute("maintenance",sum1);
+		m.addAttribute("salary",sum2);
+		m.addAttribute("orders",sum3);
+		m.addAttribute("wholeorder",sum4);
+		m.addAttribute("month", month1);
+		return "detail-sale";
+	}
+	@RequestMapping(value="/search-order",method=RequestMethod.GET)
+	public String search_order(Model m)
+	{
+		String order_id=null;
+		m.addAttribute("order_id",order_id);
+		return "search-order";
+	}
+	@RequestMapping(value="/order-detail",method=RequestMethod.POST)
+	public String order_detail(@ModelAttribute("order_id") String order_id,Model m)
+	{
+		List<Order_extended> o=mis_service.get_order_list(order_id);
+		m.addAttribute("order", o);
+		return "order-detail";
 	}
 	
 	

@@ -17,25 +17,16 @@
 <div class="container mt-5">
 <div class="row ">
   <div class="col-md-6 offset-md-3">
-    <form class="form-horizontal" action="${pageContext.request.contextPath}/user/handle-user-change-password/${username}" method="post">
+    <form class="form-horizontal" action="${pageContext.request.contextPath}/admin/order-detail" method="post">
       <div class="panel panel-default">
         <div class="panel-heading">
-        <h4 class="panel-title">Change Password</h4>
+        <h4 class="panel-title">Enter order id</h4>
         </div>
         <div class="panel-body">
-         <c:if test="${permission==false }">
           <div class="form-group">
-            <label class="col-sm-2 control-label">Old Password</label>
+            <label class="col-sm-2 control-label">Order id</label>
             <div class="col-sm-10">
-              <input type="password" class="form-control"  id="password1" name="password1">
-            </div>
-            
-          </div>
-          </c:if>
-          <div class="form-group">
-            <label class="col-sm-2 control-label">New Password</label>
-            <div class="col-sm-10">
-              <input type="password" class="form-control" id="password2" name="password2" >
+              <input type="text" class="form-control" id="order_id" name="order_id" >
             </div>
           </div>
         </div>

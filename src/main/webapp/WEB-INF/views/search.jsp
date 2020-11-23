@@ -11,13 +11,13 @@
 <div class="container mt-3">
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
-		<h1 class="text-center mb-3">Add Product</h1>
-		<form action="handle-cart-add" method="post">
+		<h1 class="text-center mb-3">Choce the options</h1>
+		<form>
 			<div class="form-group">
 		    <label for="category">Category</label>
 		    <select  class="form-control" id="category" name="category" required>
 		    <option value="">-select option-</option>
-		      <c:forEach items="${cat }" var="p">
+		      <c:forEach items="${category }" var="p">
 		      <option value="${p.getCategory_id() }">${p.getCategory_name() }</option>
 		      </c:forEach>
 		    </select>
@@ -33,23 +33,10 @@
 		    <select class="form-control" id="product_id" name="product_id" required>
 		    <option value="">-select option-</option>
 		    </select>
-		  </div>
-			<div class="form-group">
-			<label for="quantity">Quantity</label>
-			<input placeholder="Quantity" class="form-control" id="quantity" type="number" value="1" min="1" max="100" name="quantity" required/>
-			</div>
-			<div class="form-group" >
-			<label for="price">Price</label>
-				<input type="number" class="form-control" id="price" value="" name="price" readonly>
-			</div>
-			<div class="form-group" >
-			<label for="total">Total</label>
-				<input type="text" class="form-control" id="total" name="total" disabled>
-			</div>
+		    </div>
 			<div class="container text-center">
 				<a href="${pageContext.request.contextPath}/" class ="btn btn-outline-danger">Back</a>
-				<a href="cart" class ="btn btn-secondary">Go to cart</a>
-				<button type="submit" class="btn btn-primary" id="btn">Submit</button>
+				<a href="" class ="btn btn-secondary" id="btn">Submit</a>
 			</div>
 			
 		</form>
@@ -113,86 +100,20 @@ $(document).ready(function(){
 		
 	});
 });
-
-
-
 </script>
-<script >
+<script>
 $(document).ready(function(){
 	$('#product_id').change(function(){
 		var product_id=$(this).val();
 		if(product_id.length>0)
 			{
-			$.ajax({
-				type:'GET',
-				url:'${pageContext.request.contextPath}/test-demo4/'+product_id,
-				success:function(result)
-				{
-					var result=JSON.parse(result);
-					/* console.log(result); */
-					document.getElementById("price").setAttribute('value',result.in_price);
-					document.getElementById("total").setAttribute('value',document.getElementById("quantity").value*document.getElementById("price").value);
-					if(result.in_quantity==0)
-					{
-						$("#btn").prop('disabled', true);
-						alert("Product is out of stock");
-						
-					}
-					else
-						{
-						$("#btn").prop('disabled', false);
-						}
-				}
-				
-			});
+				document.getElementById("btn").href="search-product/"+product_id; 
 			}
 		
 	});
 });
 </script>
-<script >
-$(document).ready(function(){
-	$('#quantity').change(function(){
-		var quantity=$(this).val();
-		var price=document.getElementById("price").value;
-		var product_id=document.getElementById("product_id").value;
-		if(price.length>0)
-			{
-			document.getElementById("total").setAttribute('value',price*quantity);
-			}
-		if(product_id.length>0&&quantity>0)
-		{
-	
-			$.ajax({
-				type:'GET',
-				url:'${pageContext.request.contextPath}/test-demo4/'+product_id,
-				success:function(result)
-				{
-					var result=JSON.parse(result);
-					if(quantity>result.in_quantity)
-					{
-						
-						$("#btn").prop('disabled', true);
-						alert("Quantity is too large to be added in cart");
-					}
-					else
-					{
-						$("#btn").prop('disabled', false);
-					}
-				}
-				
-			});
-		}
-		else
-		{
-			$("#btn").prop('disabled', true);
-		}
-		
-	});
-		
-});
 
 
-</script>
 </body>
 </html>

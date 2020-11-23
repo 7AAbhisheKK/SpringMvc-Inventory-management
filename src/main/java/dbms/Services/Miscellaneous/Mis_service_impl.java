@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import dbms.Entity.Employee_payment_extended;
+import dbms.Entity.Order_extended;
 import dbms.Entity.Product;
 import dbms.Entity.Product_order;
 import dbms.Services.Product.RowMapperImpl;
@@ -22,7 +24,7 @@ public class Mis_service_impl implements Mis_service {
 		Date d1 = new Date();
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String date=sdf.format(d1);
-		String query="select * from product where in_expiry_date< ?";
+		String query="select * from product where in_expiry_date< ? and in_quantity>0";
 		List<Product> product=this.jdbcTemplate.query(query, new RowMapperImpl(),date);
 		return product;
 	}
@@ -31,13 +33,13 @@ public class Mis_service_impl implements Mis_service {
 		Date d1 = new Date();
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String date=sdf.format(d1);
-		String query="select * from product where expiry_date< ?";
+		String query="select * from product where expiry_date< ? and available_quantity>0";
 		List<Product> product=this.jdbcTemplate.query(query, new RowMapperImpl(),date);
 		return product;
 	}
 
 	public List<Product> Expiring_one(int interval) {
-		String query="select * from product where expiry_date <date_add(now(),interval ? month) and expiry_date >=now()";
+		String query="select * from product where expiry_date <date_add(now(),interval ? month) and expiry_date >=now() and available_quantity>0";
 		List<Product> product=this.jdbcTemplate.query(query, new RowMapperImpl(),interval);
 		return product;
 	}
@@ -108,6 +110,48 @@ public class Mis_service_impl implements Mis_service {
 			}
 		}
 		return 0;
+	}
+
+	public List<Employee_payment_extended> getEmployee_payment_all() {
+		String query="select amount,description,date,name,employee.username from employee_payment,employee where employee.username=employee_payment.username";
+		List<Employee_payment_extended> e=this.jdbcTemplate.query(query, new RowMapper_employee_payment_extended());
+		return e;
+	}
+
+	public List<Employee_payment_extended> getEmployee_payment(String username) {
+		String query="select amount,description,date,name,employee.username from employee_payment,employee where employee.username=employee_payment.username and employee_payment.username=?";
+		List<Employee_payment_extended> e=this.jdbcTemplate.query(query, new RowMapper_employee_payment_extended(),username);
+		return e;
+	}
+
+	public int get_maintenance(String month,String year) {
+		String query="select sum(amount) from maintenance where month(date)=? and year(date)=?";
+		int sum=this.jdbcTemplate.queryForObject(query, new RowMapper_int(),month,year);
+		return sum;
+	}
+
+	public int get_salary(String month, String year) {
+		String query="select sum(amount) from employee_payment where month(date)=? and year(date)=?";
+		int sum=this.jdbcTemplate.queryForObject(query, new RowMapper_int(),month,year);
+		return sum;
+	}
+
+	public int get_order(String month, String year) {
+		String query="select sum(amount) from orders where month(order_date)=? and year(order_date)=?";
+		int sum=this.jdbcTemplate.queryForObject(query, new RowMapper_int(),month,year);
+		return sum;
+	}
+
+	public List<Order_extended> get_order_list(String order_id) {
+		String query="select amount,customer_name,quantity,(select name from product where product.product_id=purchase_detail.product_id) as name,purchase_detail.product_id,price,order_date from orders,purchase_detail where orders.order_id=? and orders.order_id=purchase_detail.order_id";
+		List<Order_extended> l=this.jdbcTemplate.query(query, new RowMapper_order_extended(),order_id);
+		return l;
+	}
+
+	public int get_whole_order(String month, String year) {
+		String query="select sum(price) from wholesale_order where month(order_date)=? and year(order_date)=?";
+		int sum=this.jdbcTemplate.queryForObject(query, new RowMapper_int(),month,year);
+		return sum;
 	}
 
 }

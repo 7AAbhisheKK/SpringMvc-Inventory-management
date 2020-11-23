@@ -6,6 +6,7 @@
 <meta charset="ISO-8859-1">
 <%@include file="./base.jsp" %>
 </head>
+<%@include file="./Dheader.jsp" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/bill_css.css" />"  media='all'>
 <body>
 <script>

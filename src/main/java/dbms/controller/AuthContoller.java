@@ -128,14 +128,22 @@ public class AuthContoller {
 			roles.add(a.getAuthority());
 		}
 		String user=authentication.getName();
-		Employee u=user_service.getUser(user);
+		Employee u=user_service.getUser(username);
 		Post p=post_service.getPost(u.getPost_id());
 		Employee_extended e=new Employee_extended(u,p);
 		System.out.println(e);
-		if(u.getUsername()!=username && !roles.contains("ROLE_ADMIN"))
+		if(!user.equals(username))
 		{
-			System.out.println("hello2");
-			return "error";
+			if(!roles.contains("ROLE_ADMIN"))
+			{
+				return "error";
+			}
+			
+		}
+		boolean haspermission=false;
+		if(roles.contains("ROLE_ADMIN"))
+		{
+			haspermission=true;
 		}
 		m.addAttribute("mob1",num.get(0));
 		if(num.size()>1)
@@ -147,6 +155,7 @@ public class AuthContoller {
 			m.addAttribute("mob2",null);
 		}
 		m.addAttribute("employee",e);
+		m.addAttribute("permission", haspermission);
 		return "user";
 		
 	}
@@ -169,12 +178,18 @@ public class AuthContoller {
 		Employee u=user_service.getUser(user);
 		Post p=post_service.getPost(u.getPost_id());
 		Employee_extended e=new Employee_extended(u,p);
-		if(u.getUsername()!=username && !roles.contains("ROLE_ADMIN"))
+		if(!u.getUsername().equals(username) && !roles.contains("ROLE_ADMIN"))
 		{
 			return "error";
 		}
 		String password1=null;
 		String password2=null;
+		boolean permission=false;
+		if(roles.contains("ROLE_ADMIN"))
+		{
+			permission=true;
+		}
+		m.addAttribute("permission", permission);
 		m.addAttribute("password1",password1);
 		m.addAttribute("password2", password2);
 		return "pass-change";
@@ -200,12 +215,12 @@ public class AuthContoller {
 		Employee u=user_service.getUser(user);
 		Post p=post_service.getPost(u.getPost_id());
 		Employee_extended e=new Employee_extended(u,p);
-		if(u.getUsername()!=username && !roles.contains("ROLE_ADMIN"))
+		if(!u.getUsername().equals(username) && !roles.contains("ROLE_ADMIN"))
 		{
 			redirectview.setUrl(request.getContextPath()+"/error");
 			return redirectview;
 		}
-		if(passwordEncoder.matches(password1, u.getPassword()))
+		if(roles.contains("ROLE_ADMIN")||passwordEncoder.matches(password1, u.getPassword()))
 		{
 			user_service.updatepass(username, passwordEncoder.encode(password2));
 		}
@@ -315,7 +330,7 @@ public class AuthContoller {
 			redirectview.setUrl(request.getContextPath()+"/admin");
 			return redirectview;
 		}
-		else if(roles.contains("ROLE_STAF"))
+		else if(roles.contains("ROLE_STAFF"))
 		{
 			redirectview.setUrl(request.getContextPath()+"/staff");
 			return redirectview;

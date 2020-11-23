@@ -1,5 +1,6 @@
 package dbms.controller;
 
+import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -51,19 +52,36 @@ public class HomeController {
 	
 	@Autowired
 	private Mis_service_impl mis_service;
+	@RequestMapping("/search-product")
+	public String search_final(HttpServletRequest request,Model m)
+	{
+		List<Category> category=category_service.getAllcategory();
+		m.addAttribute("category",category);
+		
+		return "search";
+	}
 	
-	
+	@RequestMapping("/search-product/{product_id}")
+	public String search_final(@PathVariable("product_id") String product_id,HttpServletRequest request,Model m)
+	{
+		Product p=product_service.getProduct(product_id);
+		m.addAttribute("product",p);
+		
+		return "result";
+	}
 	
 	@RequestMapping("/test")
 	public String test(Model m)
 	{
 		List<Category> l=category_service.getAllcategory();
 		m.addAttribute("cat",l);
+		
 		return "test";
 	}
 	@RequestMapping({"/",""})
-	public String home(Model m)
+	public String home(Model m,Principal principal)
 	{
+		String name=principal.getName();
 		List<Product> l=product_service.getAllProduct();
 		m.addAttribute("product",l);
 		return "header_staff";
@@ -153,6 +171,7 @@ public class HomeController {
 	{
 		m.addAttribute("title","Sub Category");
 		List<Category> l=category_service.getAllcategory();
+		m.addAttribute("category", l);
 		return "add_sub_cat";
 	}
 	@RequestMapping(value="/handle-add-sub",method=RequestMethod.POST)
@@ -215,6 +234,9 @@ public class HomeController {
 		
 		List<Product> p=mis_service.Expired_product();
 		m.addAttribute("product",p);
+		String url=null;
+		url="staff/in-stock-dump";
+		m.addAttribute("url",url);
 		return "expired";
 	}
 	@RequestMapping(value="/expired2",method=RequestMethod.GET)
@@ -223,6 +245,9 @@ public class HomeController {
 		
 		List<Product> p=mis_service.Expired_ware();
 		m.addAttribute("product",p);
+		String url=null;
+		url="staff/in-ware-dump";
+		m.addAttribute("url",url);
 		return "expired";
 	}
 	@RequestMapping(value="/handle-expiring-soon",method=RequestMethod.POST)
@@ -244,12 +269,13 @@ public class HomeController {
 			p.setIn_price(p.getSelling_price());
 			p.setIn_expiry_date(p.getExpiry_date());
 			product_service.change(p, product_id);
+			System.out.println(p);
 			RedirectView redirectview=new RedirectView();
 			redirectview.setUrl(request.getContextPath()+"/staff/out-stock");
 			return redirectview;
 		}
 		RedirectView redirectview=new RedirectView();
-		redirectview.setUrl(request.getContextPath()+"/erro");
+		redirectview.setUrl(request.getContextPath()+"/error");
 		return redirectview;
 	}
 	@RequestMapping(value="/refill/{product_id}",method=RequestMethod.GET)
@@ -264,6 +290,22 @@ public class HomeController {
 		List<Product> l=product_service.out_stock_ware();
 		m.addAttribute("product",l);
 		return "out-stock-ware";
+	}
+	@RequestMapping(value="/in-stock-dump/{product_id}",method=RequestMethod.GET)
+	public RedirectView in_dump(@PathVariable("product_id") String product_id,HttpServletRequest request)
+	{
+		product_service.instock_dump(product_id);
+		RedirectView redirectview=new RedirectView();
+		redirectview.setUrl(request.getContextPath()+"/staff/expired");
+		return redirectview;
+	}
+	@RequestMapping(value="/in-ware-dump/{product_id}",method=RequestMethod.GET)
+	public RedirectView ware_dump(@PathVariable("product_id") String product_id,HttpServletRequest request)
+	{
+		product_service.inware_dump(product_id);
+		RedirectView redirectview=new RedirectView();
+		redirectview.setUrl(request.getContextPath()+"/staff/expired2");
+		return redirectview;
 	}
 	
 	

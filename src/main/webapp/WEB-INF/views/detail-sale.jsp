@@ -16,27 +16,38 @@
 		<table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Category Id</th>
+      <th scope="col">Month</th>
       <th scope="col">Name</th>
-      <th scope="col">Action</th>
+      <th scope="col">Amount</th>
     </tr>
   </thead>
   <tbody>
-  <c:forEach items="${category }" var="p">
     <tr>
-      <th scope="row">${p.getCategory_id() }</th>
-      <td>${p.getCategory_name() }</td>
-      <td>
-      	<a href=""><i class="fas fa-eraser text-danger"></i></a>
-      	<a href=""><i class="fas fa-pencil-alt text-primary"></i></a>
+      <th scope="row">${month }</th>
+      <td>Maintenance </td>
+      <td>${maintenance}
       </td>
     </tr>
-    </c:forEach>
+    <tr>
+      <th scope="row">${month }</th>
+      <td>Salary </td>
+      <td>${salary}
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">${month }</th>
+      <td>Orders </td>
+      <td>${orders}
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">${month }</th>
+      <td>Whole Orders </td>
+      <td>${wholeorder}
+      </td>
+    </tr>
   </tbody>
 </table>
-	<div class="container text-center">
-		<a href="add-category" class="btn btn-outline-success">Add Category</a>
-	</div>
 	</div>
 </div>
 </body>

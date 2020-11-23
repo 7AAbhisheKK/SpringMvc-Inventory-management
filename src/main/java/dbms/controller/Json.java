@@ -1,8 +1,10 @@
 package dbms.controller;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.google.gson.Gson;
 
+import dbms.Entity.Cart;
 import dbms.Entity.Product;
 import dbms.Entity.Product_order;
 import dbms.Entity.Sub_category;
@@ -79,5 +83,36 @@ public class Json {
 		Gson json=new Gson();
 		String price=json.toJson(selling_price);
 		return price;
+	}
+	@RequestMapping(value="/test-demo6/{product_id}",method=RequestMethod.GET)
+	public RedirectView remove_itme(@PathVariable("product_id") String product_id,HttpSession session,HttpServletRequest request)
+	{
+		List<Cart> c=(List<Cart>) session.getAttribute("cart1");
+		Iterator<Cart> iter=c.iterator();
+		while(iter.hasNext())
+		{
+			if(iter.next().getProduct_id().equals(product_id))
+			{
+				System.out.println("hello");
+				iter.remove();
+			}
+		}
+		if(c.size()==0)
+		{
+			session.setAttribute("cart1", c);
+		}
+		session.setAttribute("cart1", c);
+		RedirectView redirectview=new RedirectView();
+		redirectview.setUrl(request.getContextPath()+"/cashier/cart");
+		return redirectview;
+		
+	}
+	@RequestMapping(value="/test-demo7/",method=RequestMethod.GET)
+	public RedirectView remove_itme_all(HttpSession session,HttpServletRequest request)
+	{
+		session.removeAttribute("cart1");
+		RedirectView redirectview=new RedirectView();
+		redirectview.setUrl(request.getContextPath()+"/cashier/cart");
+		return redirectview;
 	}
 }

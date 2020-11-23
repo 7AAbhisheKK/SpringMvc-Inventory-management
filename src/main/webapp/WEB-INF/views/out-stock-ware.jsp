@@ -1,12 +1,13 @@
 <html>
 <head>
+<%@include file="./Dheader.jsp" %>
 	<%@include file="./base.jsp" %>
 	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 </head>
 <body>
 <div class="container mt-3">
 	<div class="col-md-12">
-		<h1 class="text-center mb-3">Welcome to Product App</h1>
+		<h1 class="text-center mb-3">Out of Stock in Warehouse</h1>
 		<table class="table">
   <thead class="thead-dark">
     <tr>
@@ -43,7 +44,7 @@
       <td>${p.getBrand() }</td>
       <td>${p.getSub_category() }</td>
        <td>
-      	<a href="handle-product-order" class="btn btn-outline-success">Order</a>
+      	<a href="handle-product-order" class="btn btn-outline-success">Update</a>
       </td>
     </tr>
     </c:forEach>

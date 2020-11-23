@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@include file="./Dheader.jsp" %>
 <meta charset="ISO-8859-1">
 <%@include file="./base.jsp" %>
 </head>
@@ -11,7 +12,7 @@
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
 		<h1 class="text-center mb-3">Enter the quantity</h1>
-		<form action="${pageContext.request.contextPath}/handle-refill/${product_id}" method="post">
+		<form action="${pageContext.request.contextPath}/staff/handle-refill/${product_id}" method="post">
 			<div class="form-group" >
 			<label for="quantity">Enter the Quantity</label>
 				<input placeholder="Quantity" class="form-control" id="quantity" type="number" value="1" min="1" max="100" name="quantity" required/>

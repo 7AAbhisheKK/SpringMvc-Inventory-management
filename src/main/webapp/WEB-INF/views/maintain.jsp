@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@include file="./Dheader.jsp" %>
 <meta charset="ISO-8859-1">
 <%@include file="./base.jsp" %>
 </head>
@@ -10,7 +11,7 @@
 <div class="container mt-3">
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
-		<h1 class="text-center mb-3">Fill the product detail</h1>
+		<h1 class="text-center mb-3">Maintenance</h1>
 		<form action="handle-maintenance" method="post">
 			<div class="form-group">
 			<label for="description">Description</label>

@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@include file="./Dheader.jsp" %>
 <meta charset="ISO-8859-1">
 <%@include file="./base.jsp" %>
 </head>
@@ -11,7 +12,7 @@
 	<div class="row">
 		<div class="col-md-6 offset-md-3">
 		<h1 class="text-center mb-3">Change product detail</h1>
-		<form action="${pageContext.request.contextPath }/update/${ product_id }" method="post">
+		<form action="${pageContext.request.contextPath }/staff/update/${ product_id }" method="post">
 			<div class="form-group">
 				<label for="name">Product Name</label>
 				<input type="text" class="form-control" id="name" name="name" placeholder="Enter Product Name" value="${product.getName()}" >
@@ -58,6 +59,10 @@
 			</div>
 			<div class="form-group">
 				<input type="text" class="form-control" id="sub_category" name="sub_category"  value="${product.getSub_category() }" hidden>
+			</div>
+			<div class="form-group">
+				<label for="in_wholesale_price">Stock Expiry Date</label>
+				<input type="date" class="form-control" id="in_expiry_date" name="in_expiry_date"  value="${product.getIn_expiry_date() }" >
 			</div>
 			<div class="container text-center">
 				<a href="${pageContext.request.contextPath}/" class ="btn btn-outline-danger">Back</a>

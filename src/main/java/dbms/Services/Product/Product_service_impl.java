@@ -69,5 +69,16 @@ public class Product_service_impl implements Product_service {
 		List<Product> product=this.jdbcTemplate.query(query,new RowMapperImpl());
 		return product;
 	}
+	public int instock_dump(String product_id) {
+		String query="update product set in_quantity=0 where product_id=?";
+		System.out.println(product_id);
+		int r=this.jdbcTemplate.update(query,product_id);
+		return r;
+	}
+	public int inware_dump(String product_id) {
+		String query="update product set available_quantity=0 where product_id=?";
+		int r=this.jdbcTemplate.update(query,product_id);
+		return r;
+	}
 
 }

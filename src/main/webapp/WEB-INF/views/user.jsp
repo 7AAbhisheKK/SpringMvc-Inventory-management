@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@include file="./Dheader.jsp" %>
 <%@include file="./base.jsp" %>
 	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<link rel="stylesheet" href="<c:url value="/resources/css/user.css" />"  media='all'>
@@ -70,7 +71,9 @@
           <div class="form-group">
             <div class="col-sm-10 col-sm-offset-2">
              <a href="${pageContext.request.contextPath}/" class="btn"><i class="fas fa-undo"></i>Back</a>
+             <c:if test="${permission==true }">
              <a href="user-edit/${employee.getUsername() }" class="btn"><i class="fas fa-eraser text-danger">Edit</i></a>
+             </c:if>
              <a href="handle-user-change-pass/${employee.getUsername() }" class="btn"><i class="fa fa-key" aria-hidden="true"></i>Change password</a>
             </div>
           </div>

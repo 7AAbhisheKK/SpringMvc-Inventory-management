@@ -44,15 +44,15 @@
       <td>${p.getBrand() }</td>
       <td>${p.getIn_quantity() }</td>
       <td>
-      	<a href="handle-delete/${p.getProduct_id() }"><i class="fas fa-eraser text-danger"></i></a>
-      	<a href="handle-update/${p.getProduct_id() }"><i class="fas fa-pencil-alt text-primary"></i></i></a>
+      	<a href="staff/handle-delete/${p.getProduct_id() }"><i class="fas fa-eraser text-danger"></i></a>
+      	<a href="staff/handle-update/${p.getProduct_id() }"><i class="fas fa-pencil-alt text-primary"></i></i></a>
       </td>
     </tr>
     </c:forEach>
   </tbody>
 </table>
 	<div class="container text-center">
-		<a href="add-product" class="btn btn-outline-success">Add Product</a>
+		<a href="staff/add-product" class="btn btn-outline-success">Add Product</a>
 	</div>
 	</div>
 </div>

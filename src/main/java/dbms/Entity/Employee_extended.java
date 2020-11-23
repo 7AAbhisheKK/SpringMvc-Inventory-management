@@ -111,7 +111,7 @@ public class Employee_extended {
 		this.dob = dob;
 		this.date_joined = date_joined;
 		this.date_resigned = date_resigned;
-		Address = address;
+		this.Address = address;
 		this.email = email;
 		this.role = role;
 		this.last_payment = last_payment;

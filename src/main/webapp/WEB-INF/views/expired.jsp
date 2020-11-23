@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@include file="./Dheader.jsp" %>
 <%@include file="./base.jsp" %>
 	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <meta charset="ISO-8859-1">
@@ -11,7 +12,7 @@
 <body>
 <div class="container mt-3">
 	<div class="col-md-12">
-		<h1 class="text-center mb-3">Welcome to Product App</h1>
+		<h1 class="text-center mb-3">Expired Products</h1>
 		<table class="table">
   <thead class="thead-dark">
     <tr>
@@ -23,7 +24,7 @@
       <th scope="col">Arrival Date</th>
       <th scope="col">Available Quantity</th>
       <th scope="col">Brand</th>
-      <th scope="col">Sub Category id</th>
+      <th scope="col">In Stock</th>
       <th scope="col">Action</th>
       
     </tr>
@@ -44,17 +45,14 @@
       <td>${p.getArrival_date() }</td>
       <td>${p.getAvailable_quantity() }</td>
       <td>${p.getBrand() }</td>
-      <td>${p.getSub_category() }</td>
+      <td>${p.getIn_quantity() }</td>
       <td>
-      	<a href="" class="btn btn-outline-danger">Dump the product</a>
+      	<a href="${pageContext.request.contextPath}/${url}/${p.getProduct_id() }" class="btn btn-outline-danger">Dump the product</a>
       </td>
     </tr>
     </c:forEach>
   </tbody>
 </table>
-	<div class="container text-center">
-		<a href="add-product" class="btn btn-outline-success">Add Product</a>
-	</div>
 	</div>
 </div>
 </body>

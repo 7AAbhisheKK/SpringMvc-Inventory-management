@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@include file="./Dheader.jsp" %>
 <meta charset="ISO-8859-1">
 <%@include file="./base.jsp" %>
 </head>
@@ -47,10 +48,6 @@
 			<div class="form-group">
 				<label for="Available_quantity">Available Quantity</label>
 				<input type="text" class="form-control" id="Available_quantity" name="Available_quantity" placeholder="Enter the Available Quantity">
-			</div>
-			<div class="form-group">
-				<label for="minimum_quantity">Minimum Quantity</label>
-				<input type="text" class="form-control" id="minimum_quantity" name="minimum_quantity" placeholder="Enter the minimum Quantity">
 			</div>
 			<div class="form-group">
 				<label for="Brand">Brand</label>

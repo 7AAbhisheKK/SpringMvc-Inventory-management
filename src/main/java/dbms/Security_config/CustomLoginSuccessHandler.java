@@ -1,12 +1,14 @@
 package dbms.Security_config;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
@@ -27,6 +29,8 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 		}
 		RedirectStrategy redirectstrategy=new DefaultRedirectStrategy();
 		redirectstrategy.sendRedirect(request, response, targeturl);
+		HttpSession session=request.getSession();
+		session.setAttribute("name", authentication.getName());
 	}
 	protected String determinetargeturl(Authentication authentication)
 	{
@@ -37,7 +41,6 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 		{
 			roles.add(a.getAuthority());
 		}
-		System.out.println(roles);
 		if(roles.contains("ROLE_ADMIN"))
 		{
 			url="/admin";

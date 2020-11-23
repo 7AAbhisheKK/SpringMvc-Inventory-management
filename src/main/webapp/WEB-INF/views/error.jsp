@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@include file="./Dheader.jsp" %>
 <meta charset="ISO-8859-1">
 <%@include file="./base.jsp" %>
 <link rel="stylesheet" href="<c:url value="/resources/css/error.css" />"  media='all'>
@@ -19,7 +20,7 @@
                 <h1>
                     Oops!</h1>
                 <h2>
-                    404 Not Found</h2>
+                    Something Went Wrong</h2>
                 <div class="error-details">
                     Sorry, an error has occured, Requested page not found!
                 </div>

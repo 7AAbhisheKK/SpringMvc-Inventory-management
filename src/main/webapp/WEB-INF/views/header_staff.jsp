@@ -46,7 +46,7 @@
     </ul>
   </div>
   <div class="my-2 my-lg-0">
-  <a class="nav-link" href="${pageContext.request.contextPath}/"><i class="icon-signout"></i>${employee.getName() }</a>
+  <a class="nav-link" href="user/${name}"><i class="icon-signout"></i>${name}</a>
   </div>
   <div class="my-2 my-lg-0">
   <a class="nav-link" href="logout"><i class="icon-signout"></i>Logout</a>

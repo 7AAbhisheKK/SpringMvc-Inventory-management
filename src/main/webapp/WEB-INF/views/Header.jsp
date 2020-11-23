@@ -29,7 +29,8 @@
           <a class="dropdown-item" href="${pageContext.request.contextPath}/staff/add-category">Add Category</a>
           <a class="dropdown-item" href="${pageContext.request.contextPath}/staff/add-sub-category">Add Sub category</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/staff/handle-product-order">New arrival</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/staff/handle-product-order">New arrival</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/staff/search-product">Search Product or update product</a>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -47,6 +48,9 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="admin/employee">Employee</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/search-order">Order detail</a>
       </li>
     </ul>
   </div>

@@ -71,7 +71,6 @@ public class OrderController {
 				cx.add(temp);
 			}
 		}
-		System.out.println(cx);
 		m.addAttribute("cart",cx);
 		return "cart";
 	}
@@ -103,18 +102,21 @@ public class OrderController {
 			c.add(cart);
 			session.setAttribute("cart1", c);
 		}
-		System.out.println(c);
 		RedirectView redirectview=new RedirectView();
 		redirectview.setUrl(request.getContextPath()+"/cashier/add-cart");
 		return redirectview;
 	}
 	@RequestMapping(value="/order",method=RequestMethod.GET)
-	public String order(Model m)
+	public String order(Model m,HttpSession session)
 	{
+		List<Cart> c=(List<Cart>) session.getAttribute("cart1");
+		if(c==null)
+		{
+			return "error";
+		}
 		Order order=new Order();
 		Date d1 = new Date();
 		DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println(sdf.format(d1));
 		order.setOrder_date(sdf.format(d1));
 		m.addAttribute("order",order);
 		return "order";
