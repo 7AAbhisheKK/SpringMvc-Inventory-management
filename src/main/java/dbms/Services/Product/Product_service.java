@@ -16,4 +16,5 @@ public interface Product_service {
 	public List<Product> out_stock_ware();
 	public int instock_dump(String product_id);
 	public int inware_dump(String product_id);
+	public boolean check(String product_id,int quantity);
 }

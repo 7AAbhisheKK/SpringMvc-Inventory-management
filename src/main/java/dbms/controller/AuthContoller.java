@@ -75,12 +75,21 @@ public class AuthContoller {
 //		long age1=d1.getTime()-dob.getTime();
 //		System.out.println(employee);
 //		int age=(int) (TimeUnit.MILLISECONDS.toDays(age1)/365l);
-		employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-		this.user_service.insert(employee);
-		this.mis_service.insert_number(mobile1, mobile2, employee.getUsername());
-		String url="/error";
 		RedirectView redirectview=new RedirectView();
 		redirectview.setExposeModelAttributes(false);
+		employee.setPassword(passwordEncoder.encode(employee.getPassword()));
+		try{
+			this.user_service.insert(employee);
+		}
+		catch(Exception e)
+		{
+			redirectview.setUrl(request.getContextPath()+"/error");
+			return redirectview;
+		}
+		
+		this.mis_service.insert_number(mobile1, mobile2, employee.getUsername());
+		String url="/error";
+		
 		if(authentication==null)
 		{
 			redirectview.setUrl(request.getContextPath()+"/login");

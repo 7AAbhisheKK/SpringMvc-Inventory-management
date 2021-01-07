@@ -53,7 +53,7 @@
     	<div class="input-group-prepend">
 		    <span class="input-group-text"> <i class="fa fa-address-book" aria-hidden="true"></i> </span>
 		 </div>
-        <input name="address" id="address" class="form-control" placeholder="Enter the Address" type="text-area"  required>
+        <input name="address" id="address" class="form-control" placeholder="Enter the Address"   required>
     </div> <!-- form-group// -->
     <div class="form-group input-group">
     	<div class="input-group-prepend">
@@ -106,6 +106,13 @@
 
 </div> 
 <script>
+function get_age(born, now) {
+    var birthday = new Date(now.getFullYear(), born.getMonth(), born.getDate());
+    if (now >= birthday) 
+      return now.getFullYear() - born.getFullYear();
+    else
+      return now.getFullYear() - born.getFullYear() - 1;
+}
 function validation()
 {
 	var username=document.getElementById("username").value;
@@ -126,6 +133,19 @@ function validation()
 		}
 		
 	}
+ 	var dob=document.getElementById("dob").value;
+	 var now = new Date();
+	 console.log(dob);
+	 var birthdate = dob.split("-");
+	 var born = new Date(birthdate[0], birthdate[1]-1, birthdate[2]);
+	 console.log(born);
+	 var age=get_age(born,now);
+	 console.log(age);
+	 if(age<18)
+	 {
+		 alert("Employee must be 18 year old");
+		 return false;
+	 }
 	x=document.getElementById("password").value;
 	y=document.getElementById("rp").value;
 	if(x!=y)
@@ -133,6 +153,7 @@ function validation()
 		alert("Password did not match");
 		return false;
 	}
+	var f=true;
 	$.ajax({
 		type:'GET',
 		url:'${pageContext.request.contextPath}/test-demo5/'+username,
@@ -143,11 +164,13 @@ function validation()
 			{
 				
 				alert("Username is Already Taken");
-				return false;
+				f=false;
 			}
 		}
 		
 	});
+	if(f==false)
+		return false;
 	return true;
 }
 </script>

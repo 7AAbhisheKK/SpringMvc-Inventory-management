@@ -25,7 +25,14 @@ public class Product_service_impl implements Product_service {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	public int change(Product product,String product_id) {
-		
+		if(product.getExpiry_date()!=null&&product.getExpiry_date().isEmpty())
+		{
+			product.setExpiry_date(null);
+		}
+		if(product.getIn_expiry_date()!=null&&product.getIn_expiry_date().isEmpty())
+		{
+			product.setIn_expiry_date(null);
+		}
 		System.out.println(product);
 		String query="update product set name=?,selling_price=?,wholesale_price=?,Arrival_date=?,Expiry_date=?,Available_quantity=?,Brand=?,product_id=?,sub_category_id=?,in_quantity=?,in_price=?,in_wholesale_price=?,in_expiry_date=? where product_id=?";
 		int r=this.jdbcTemplate.update(query,product.getName(),product.getSelling_price(),product.getWholesale_price(),product.getArrival_date(),product.getExpiry_date(),product.getAvailable_quantity(),product.getBrand(),product.getProduct_id(),product.getSub_category(),product.getIn_quantity(),product.getIn_price(),product.getIn_wholesale_price(),product.getIn_expiry_date(),product_id);
@@ -79,6 +86,16 @@ public class Product_service_impl implements Product_service {
 		String query="update product set available_quantity=0 where product_id=?";
 		int r=this.jdbcTemplate.update(query,product_id);
 		return r;
+	}
+	public boolean check(String product_id, int quantity) {
+		String query="select * from product where product_id=?";
+		RowMapper<Product> rowMapper=new RowMapperImpl();
+		Product product=this.jdbcTemplate.queryForObject(query,rowMapper,product_id);
+		if(product.getIn_quantity()>=quantity)
+		{
+			return true;
+		}
+		return false;
 	}
 
 }

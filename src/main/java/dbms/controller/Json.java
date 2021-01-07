@@ -1,7 +1,10 @@
 package dbms.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -84,6 +87,31 @@ public class Json {
 		String price=json.toJson(selling_price);
 		return price;
 	}
+	@RequestMapping(value="/check",method=RequestMethod.GET)
+	@ResponseBody
+	public String getSellingPrice(HttpSession session)
+	{
+		List<Cart> c=(List<Cart>) session.getAttribute("cart1");
+		List<String> l=new ArrayList<String>();
+		l.add("true");
+		l.add("");
+		System.out.println(l);
+		for(Cart x:c)
+		{
+			if(!product_service.check(x.getProduct_id(), x.getQuantity()))
+			{
+				l.clear();
+				l.add("false");
+				l.add(x.getProduct_id());
+				break;
+			}
+		}
+		System.out.println(l);
+		Gson json=new Gson();
+		String check=json.toJson(l);
+		System.out.println(check);
+		return check;
+	}
 	@RequestMapping(value="/test-demo6/{product_id}",method=RequestMethod.GET)
 	public RedirectView remove_itme(@PathVariable("product_id") String product_id,HttpSession session,HttpServletRequest request)
 	{
@@ -114,5 +142,26 @@ public class Json {
 		RedirectView redirectview=new RedirectView();
 		redirectview.setUrl(request.getContextPath()+"/cashier/cart");
 		return redirectview;
+	}
+	@ResponseBody
+	@RequestMapping(value="/test-demo8/{product_id}",method=RequestMethod.GET)
+	public void remove_itme_void(@PathVariable("product_id") String product_id,HttpSession session,HttpServletRequest request)
+	{
+		List<Cart> c=(List<Cart>) session.getAttribute("cart1");
+		Iterator<Cart> iter=c.iterator();
+		while(iter.hasNext())
+		{
+			if(iter.next().getProduct_id().equals(product_id))
+			{
+				System.out.println("hello");
+				iter.remove();
+			}
+		}
+		if(c.size()==0)
+		{
+			session.setAttribute("cart1", c);
+		}
+		session.setAttribute("cart1", c);
+		
 	}
 }

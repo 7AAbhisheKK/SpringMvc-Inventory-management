@@ -39,10 +39,39 @@
 		<a href="${pageContext.request.contextPath}/" class ="btn btn-outline-danger">Back</a>
 		<a href="${pageContext.request.contextPath}/test-demo7/" class ="btn btn-outline-danger">Empty Cart</a>
 		<a href="add-cart" class="btn btn-outline-success">Add Another Item</a>
-		<a href="order" class ="btn btn-outline-danger">Order</a>
+		<a href="order" class ="btn btn-outline-danger" onclick="return validation()">Order</a>
 	</div>
 	</div>
 </div>
 </body>
+<script>
+function validation()
+{
+	$.ajax({
+		type:'GET',
+		url:'${pageContext.request.contextPath}/check',
+		success:function(result)
+		{
+			var result=JSON.parse(result);
+			console.log(result);
+			if(result[0]=="false")
+			{
+				
+				alert("Product is out of stock and now it is removed automatically");
+				$.ajax({
+					type:'GET',
+					url:'${pageContext.request.contextPath}/test-demo8/'+result[1],
+				});
+				location.reload();
+				return false;
+			}
+		}
+		
+	});
+	return true;
+	
+	
+}
 
+</script>
 </html>

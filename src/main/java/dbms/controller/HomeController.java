@@ -129,6 +129,10 @@ public class HomeController {
 	@RequestMapping("/update/{product_id}")
 	public RedirectView update(@ModelAttribute Product product,@PathVariable("product_id") String product_id,HttpServletRequest request)
 	{
+		if(product.getIn_expiry_date().isEmpty())
+		{
+			product.setIn_expiry_date(null);
+		}
 		product_service.change(product,product_id);
 		RedirectView redirectview=new RedirectView();
 		redirectview.setUrl(request.getContextPath()+"/");

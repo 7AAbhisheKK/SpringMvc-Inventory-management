@@ -55,6 +55,9 @@
     </ul>
   </div>
   <div class="my-2 my-lg-0">
+  <a class="nav-link" href="${pageContext.request.contextPath}/register"><i class="fa fa-registered" aria-hidden="true"></i>Register</a>
+  </div>
+  <div class="my-2 my-lg-0">
   <a class="nav-link" href="user/${name}"><i class="icon-signout"></i>${name }</a>
   </div>
   <div class="my-2 my-lg-0">
